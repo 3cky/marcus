@@ -268,3 +268,7 @@ i.smorg_star {
     height: 16px;
     width: 16px;
 }
+
+.fb-share-button > span {
+  vertical-align: baseline !important;
+}

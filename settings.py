@@ -28,7 +28,7 @@ MARCUS_KEYWORDS = _('')
 MARCUS_MARKDOWN_EXTRAS = ['code-friendly', 'wiki-tables']
 
 # You can specify #hashtag or @name as suffix for Twitter:
-MARCUS_RETWEET_SUFFIX = "#marcus"
+MARCUS_SHARE_SUFFIX = "#marcus"
 
 # Specify a fields which will used in search:
 MARCUS_SEARCH_FIELDS = [

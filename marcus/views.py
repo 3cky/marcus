@@ -229,11 +229,9 @@ def article(request, year, month, day, slug, language):
         if 'unapproved' in request.session:
             del request.session['unapproved']
 
-    retweet_url = u'http://twitter.com/home/?status={title}%20{url}%20{suffix}'.format(
-        title=obj.title(),
-        url=utils.absolute_url(utils.iurl(reverse('marcus-article-short', args=[obj.published.year, obj.slug, ]), language)),
-        suffix=settings.MARCUS_RETWEET_SUFFIX.replace('@', '%40')
-    )
+    share_title = obj.title()
+    share_url = utils.absolute_url(utils.iurl(reverse('marcus-article-short', args=[obj.published.year, obj.slug, ]), language))
+    share_suffix = settings.MARCUS_SHARE_SUFFIX.replace('@', '%40')
 
     keywords = [tag.title(language) for tag in obj.tags.all()] +\
         [category.title(language) for category in obj.categories.all()]
@@ -247,7 +245,9 @@ def article(request, year, month, day, slug, language):
         'language': language,
         'guest_name': guest_name,
         'guest_email': guest_email,
-        'retweet_url': retweet_url,
+        'share_title': share_title,
+        'share_url': share_url,
+        'share_suffix': share_suffix,
         'meta_keywords': ", ".join(keywords),
         'meta_description': (obj.intro(language) or "").replace('"', "'"),
     })
