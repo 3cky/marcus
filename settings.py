@@ -36,6 +36,10 @@ MARCUS_SEARCH_FIELDS = [
     'categories__slug', 'categories__title_ru', 'categories__title_en',
 ]
 
+# Google Analytics tracking code variables
+MARCUS_GA_ACCOUNT_ID = ''
+MARCUS_GA_ACCOUNT_NAME = ''
+
 # OpenID sessions dir. OpenID authentication will not work without it.
 SCIPIO_STORE_ROOT = os.path.join(STORAGE_ROOT, 'scipio')
 
