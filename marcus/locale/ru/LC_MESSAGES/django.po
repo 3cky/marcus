@@ -65,7 +65,7 @@ msgstr "Язык"
 
 #: marcus/models.py:350
 msgid "Receive by email further comments in this conversation"
-msgstr "Получать по электронной почте увеломления о новых комментариях в этой теме"
+msgstr "Получать по электронной почте уведомления о новых комментариях в этой теме"
 
 #: marcus/templates/404.html:4
 msgid "Page not found"
@@ -118,7 +118,7 @@ msgstr "Комментарии"
 
 #: marcus/templates/marcus/article_choice_list.html:4
 msgid "Articles starts with slug"
-msgstr "Статьи начинающиеся с адреса"
+msgstr "Статьи, начинающиеся с адреса"
 
 #: marcus/templates/marcus/comments.html:43
 msgid "Send to moderation"
@@ -138,7 +138,7 @@ msgstr "Обнаружен спам"
 
 #: marcus/templates/marcus/spam.html:7
 msgid "We decided that this comment is spam!"
-msgstr "Мы решили, что данный комментарий, является спамом!"
+msgstr "Мы решили, что данный комментарий является спамом!"
 
 #: marcus/templates/marcus/spam.html:9
 msgid "Please fix it..."
@@ -160,7 +160,7 @@ msgstr "Уважаемый %(guest_name)s!"
 #: marcus/templates/marcus/unsubscribe.html:9
 #, python-format
 msgid "You have just unsubscribed from article %(article_link)s."
-msgstr "Вы только что отказались от подписки на статью %(article_link)s."
+msgstr "Вы отказались от подписки на статью %(article_link)s."
 
 #: marcus/templates/marcus/blocks/articles.html:20
 msgid "Read the article"
@@ -172,7 +172,7 @@ msgstr "Статей не найдено"
 
 #: marcus/templates/marcus/blocks/comments.html:7
 msgid "Noteworthy comment"
-msgstr "Комментарий достойный внимания"
+msgstr "Комментарий, достойный внимания"
 
 #: marcus/templates/marcus/blocks/comments.html:8
 msgid "Comment is awaiting approval"
