@@ -61,9 +61,9 @@ AUTHENTICATION_BACKENDS = (
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
+    'marcus.context_processors.marcus_context',
     'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.request',
-    'marcus.context_processors.marcus_context',
 )
 
 MEDIA_ROOT = os.path.join(STORAGE_ROOT, 'media')
