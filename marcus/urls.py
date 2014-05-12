@@ -1,6 +1,7 @@
 import pingdjack
 
 from django.conf.urls import patterns, include, url
+from django.contrib.flatpages import views as flatpages
 
 from marcus import views, feeds
 
@@ -41,6 +42,8 @@ urlpatterns = patterns(
 
     url(r'^articleuploadimage/preview/(\d+)/$', views.article_upload_image_preview, name="article-upload-image-preview"),
     url(r'^sitemap', include('marcus.sitemap_urls')),
+
+    url(r'^about/$', flatpages.flatpage, {'url': '/about/'}, name='flatpage-about'),
 
     url(r'^', include('subhub.urls')),
     url(r'^', include('scipio.urls')),

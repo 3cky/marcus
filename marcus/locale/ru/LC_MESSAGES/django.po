@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-08 19:33+0400\n"
+"POT-Creation-Date: 2014-05-12 17:33+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,13 +19,25 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
+#: marcus/templates/base.html:52
+#: marcus/templates/marcus/index.html:4
+#: marcus/templates/marcus/spam_queue.html:4
+msgid "Blog"
+msgstr "Блог"
+
 #: marcus/actions.py:11
 msgid "Make approved"
 msgstr "Сделать утвержденным"
 
-#: marcus/feeds.py:160 marcus/feeds.py:209
+#: marcus/feeds.py:160
+#: marcus/feeds.py:209
 msgid "comments"
 msgstr "комментарии"
+
+#: marcus/forms.py:15
+#: marcus/models.py:338
+msgid "Text"
+msgstr "Текст"
 
 #: marcus/forms.py:19
 msgid "Name or OpenID"
@@ -35,7 +47,8 @@ msgstr "Имя или OpenID"
 msgid "Email for notifications"
 msgstr "Email для уведомлений"
 
-#: marcus/forms.py:41 marcus/forms.py:48
+#: marcus/forms.py:41
+#: marcus/forms.py:48
 msgid "This field is required."
 msgstr "Это поле является обязательным."
 
@@ -52,12 +65,9 @@ msgid "Russian"
 msgstr "Русский"
 
 #: marcus/models.py:323
+#: marcus/views.py:379
 msgid "English"
 msgstr "Английский"
-
-#: marcus/models.py:338
-msgid "Text"
-msgstr "Текст"
 
 #: marcus/models.py:339
 msgid "Language"
@@ -67,7 +77,12 @@ msgstr "Язык"
 msgid "Receive by email further comments in this conversation"
 msgstr "Получать по электронной почте уведомления о новых комментариях в этой теме"
 
+#: marcus/views.py:378
+msgid "All"
+msgstr "Все"
+
 #: marcus/templates/404.html:4
+#: marcus/templates/404.html.py:7
 msgid "Page not found"
 msgstr "Страница не найдена"
 
@@ -75,16 +90,15 @@ msgstr "Страница не найдена"
 msgid "Main page"
 msgstr "Главная страница"
 
-#: marcus/templates/base.html:51 marcus/templates/marcus/index.html:4
-#: marcus/templates/marcus/spam_queue.html:4 marcus_test/settings.py:173
-msgid "Blog"
-msgstr "Блог"
+#: marcus/templates/base.html:53
+msgid "About"
+msgstr "Об авторе"
 
-#: marcus/templates/base.html:62
+#: marcus/templates/base.html:64
 msgid "Powered by"
 msgstr "Работает на"
 
-#: marcus/templates/base.html:63
+#: marcus/templates/base.html:65
 msgid "and"
 msgstr "и"
 
@@ -105,6 +119,10 @@ msgstr "Редактировать"
 #: marcus/templates/marcus/index.html:23
 msgid "Categories"
 msgstr "Рубрики"
+
+#: marcus/templates/marcus/article.html:30
+msgid "Tweet this"
+msgstr "Твитнуть"
 
 #: marcus/templates/marcus/article.html:31
 #: marcus/templates/marcus/index.html:33
@@ -192,7 +210,8 @@ msgstr "Найти"
 msgid ""
 "You're receiving this email because subscribed to comments to "
 "%(article_link)s."
-msgstr "Вы получили это сообщение потому, что подписаны на обновление статьи %(article_link)s."
+msgstr "Вы получили это сообщение потому, что подписаны на обновление статьи "
+"%(article_link)s."
 
 #: marcus/templates/marcus/emails/followup_comment.html:4
 #: marcus/templates/marcus/emails/followup_comment.txt:5
@@ -220,7 +239,8 @@ msgstr "Чтобы отказаться от подписки, перейдит�
 msgid ""
 "You're receiving this email because subscribed to comments to "
 "\"%(article_title)s\"."
-msgstr "Вы получили это сообщение потому, что подписаны на обновление статьи \"%(article_title)s\"."
+msgstr "Вы получили это сообщение потому, что подписаны на обновление статьи "
+"\"%(article_title)s\"."
 
 #: marcus/templates/marcus/emails/followup_comment_subject.txt:1
 #: marcus/templates/marcus/emails/managers_comment_subject.txt:1
@@ -228,14 +248,3 @@ msgstr "Вы получили это сообщение потому, что п�
 msgid "New comment in \"%(article_title)s\""
 msgstr "Новый комментарий в \"%(article_title)s\""
 
-#: marcus_test/settings.py:174
-msgid "Sample blog"
-msgstr "Пример блога"
-
-#: marcus_test/settings.py:176
-msgid "Description"
-msgstr "Описание"
-
-#: marcus_test/settings.py:177
-msgid "Keywords"
-msgstr "Ключевые слова"
