@@ -24,6 +24,8 @@ MARCUS_SUBTITLE = _('Sample blog')
 MARCUS_DESCRIPTION = _('')
 MARCUS_KEYWORDS = _('')
 
+MARCUS_PROFILE_IMAGE = ''
+
 # You can specify extras for markdown:
 MARCUS_MARKDOWN_EXTRAS = ['code-friendly', 'wiki-tables']
 

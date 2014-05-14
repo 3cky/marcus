@@ -65,6 +65,7 @@ def index(request, language):
         'comments': comments,
         'meta_description': settings.MARCUS_DESCRIPTION,
         'meta_keywords': settings.MARCUS_KEYWORDS,
+        'profile_image': settings.MARCUS_PROFILE_IMAGE,
     })
 
 
