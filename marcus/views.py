@@ -249,6 +249,7 @@ def article(request, year, month, day, slug, language):
         'share_title': share_title,
         'share_url': share_url,
         'share_suffix': share_suffix,
+        'share_fb_app_id': settings.MARCUS_SHARE_FB_APP_ID,
         'meta_keywords': ", ".join(keywords),
         'meta_description': (obj.intro(language) or "").replace('"', "'"),
     })

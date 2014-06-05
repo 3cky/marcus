@@ -32,6 +32,9 @@ MARCUS_MARKDOWN_EXTRAS = ['code-friendly', 'wiki-tables']
 # You can specify #hashtag or @name as suffix for Twitter:
 MARCUS_SHARE_SUFFIX = "#marcus"
 
+# Facebook App ID for "Share" button
+MARCUS_SHARE_FB_APP_ID = ''
+
 # Specify a fields which will used in search:
 MARCUS_SEARCH_FIELDS = [
     'slug', 'title_ru', 'title_en', 'text_ru', 'text_en',
