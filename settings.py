@@ -26,9 +26,6 @@ MARCUS_KEYWORDS = _('')
 
 MARCUS_PROFILE_IMAGE = ''
 
-# You can specify extras for markdown:
-MARCUS_MARKDOWN_EXTRAS = ['code-friendly', 'wiki-tables']
-
 # You can specify #hashtag or @name as suffix for Twitter:
 MARCUS_SHARE_SUFFIX = "#marcus"
 
