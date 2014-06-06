@@ -171,6 +171,7 @@ tt.more {
 }
 
 .articles table td {
+    border: none;
     vertical-align: middle;
     padding-bottom: 10px;
 }
