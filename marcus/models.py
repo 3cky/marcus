@@ -1,7 +1,6 @@
 import re
 import hashlib
 import pytils
-import mistune
 import pingdjack
 import subhub
 import itertools
@@ -23,7 +22,7 @@ from django.db.models.signals import post_save
 
 from marcus import utils
 from marcus import managers
-
+from marcus import markdown
 
 class Translation(object):
     def __init__(self, obj, language):
@@ -277,7 +276,7 @@ class Article(models.Model):
             return self.text_ru or self.text_en
 
     def html(self, language=None):
-        html = mistune.markdown(self._language_text(language))
+        html = markdown.render(self._language_text(language))
         return mark_safe(html)
     html.needs_language = True
 
@@ -286,7 +285,7 @@ class Article(models.Model):
     summary.needs_language = True
 
     def intro(self, language=None):
-        result = mistune.markdown(self._language_text(language))
+        result = markdown.render(self._language_text(language))
         pattern = re.compile(r'^(.*)<a name="more"></a>.*', re.S)
         match = re.match(pattern, result)
         return match and mark_safe(match.group(1))
@@ -374,7 +373,7 @@ class Comment(models.Model):
         return reverse(viewname, args=(self.pk, ))
 
     def html(self):
-        html = mistune.markdown(self.text)
+        html = markdown.render(self.text)
         return mark_safe(html)
 
     def summary(self):
