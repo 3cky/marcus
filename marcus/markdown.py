@@ -21,13 +21,13 @@ class MarcusRenderer(mistune.Renderer):
                     dimensions += ' height="%d"' % int(size.group('height'))
         text = mistune.escape(text, quote=True)
         if title:
-            title = mistune.escape(title, quote=True)
-            html = '<img src="%s" alt="%s" title="%s"%s' % (src, text, title, dimensions)
+            title = ' title="%s"' % mistune.escape(title, quote=True)
         else:
-            html = '<img src="%s" alt="%s"%s' % (src, text, dimensions)
-        if self.options.get('use_xhtml'):
-            return '%s />' % html
-        return '%s>' % html
+            title = ''
+        html = '<img src="%s" alt="%s"%s%s />' % (src, text, title, dimensions)
+        if dimensions:
+            html = '<a href="%s">%s</a>' % (src, html)
+        return html
 
 def render(value, renderer=MarcusRenderer()):
     md = mistune.Markdown(renderer=renderer)
