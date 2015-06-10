@@ -1,9 +1,9 @@
 from django import template
 
-from marcus import markdown
+from marcus import markdown as md
 
 register = template.Library()
 
 @register.filter(is_safe=True)
 def markdown(value):
-    return markdown.render(value)
+    return md.render(value)
