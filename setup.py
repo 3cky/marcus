@@ -1,9 +1,14 @@
 import re
+import os
+import sys
+
 from setuptools import setup, find_packages
-from marcus import __version__
-from distutils.command.build import build as _build
 from setuptools.command.install_lib import install_lib as _install_lib
+from distutils.command.build import build as _build
 from distutils.cmd import Command
+
+from marcus import __version__
+
 
 class compile_translations(Command):
     description = 'compile message catalogs to MO files via django compilemessages'
@@ -16,21 +21,27 @@ class compile_translations(Command):
         pass
 
     def run(self):
-        import os
-        import sys
-        from django.core.management.commands.compilemessages import compile_messages
+        from django.core.management.commands.compilemessages import Command as CompileMessages
+
         curdir = os.getcwd()
         os.chdir(os.path.join(os.path.dirname(__file__), 'marcus'))
-        compile_messages(stderr=sys.stderr)
+        cmd = CompileMessages()
+        cmd.stdout = sys.stdout
+        cmd.stderr = sys.stderr
+        cmd.handle(verbosity=4, exclude=[])
         os.chdir(curdir)
+
 
 class build(_build):
     sub_commands = [('compile_translations', None)] + _build.sub_commands
 
+
 class install_lib(_install_lib):
+
     def run(self):
         self.run_command('compile_translations')
         _install_lib.run(self)
+
 
 # Installation a packages from "requirements.txt"
 requirements = open('requirements.txt')
@@ -40,12 +51,12 @@ setup_requires = []
 try:
     for line in requirements.readlines():
         line = line.strip()
-        if line and not line.startswith('#'):  # for inline  comments
+        if line and not line.startswith('#'):  # for inline comments
             if "#egg" in line:
                 names = re.findall('#egg=([^-]+)-?', line)
                 install_requires.append(names[0])
-                links = line.split()
-                dependency_links.append(links[1])
+                links = [link for link in line.split() if '://' in link]
+                dependency_links.append(links[0])
             else:
                 install_requires.append(line)
                 if "Django" in line:
@@ -88,6 +99,9 @@ setup(
         "Topic :: Software Development :: Libraries :: Application Frameworks",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
-    cmdclass={'build': build, 'install_lib': install_lib,
-        'compile_translations': compile_translations}
+    cmdclass={
+        'build': build,
+        'install_lib': install_lib,
+        'compile_translations': compile_translations
+    }
 )

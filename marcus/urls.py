@@ -39,6 +39,7 @@ urlpatterns = patterns(
     url(r'^draft/(\d+)/(?:(en|ru)/)?$', views.draft, name='marcus-draft'),
 
     url(r'^search/(?:(en|ru)/)?$', views.search, name="marcus-search"),
+    url(r'^([^/]+)/$', views.find_article, name='marcus-find-article'),
 
     url(r'^articleuploadimage/preview/(\d+)/$', views.article_upload_image_preview, name="article-upload-image-preview"),
     url(r'^sitemap', include('marcus.sitemap_urls')),
@@ -47,6 +48,4 @@ urlpatterns = patterns(
 
     url(r'^', include('subhub.urls')),
     url(r'^', include('scipio.urls')),
-
-    url(r'^([^/]+)/$', views.find_article, name='marcus-find-article'),
 )

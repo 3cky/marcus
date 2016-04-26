@@ -1,9 +1,6 @@
 Introduction
 ============
 
-.. image:: https://pypip.in/d/django-marcus/badge.png
-    :target: http://pypi.python.org/pypi/django-marcus
-
 Marcus is billingual blog engine, written Ivan Sagalaev (http://softwaremaniacs.org/about/).
 
 This fork over augmented and has the following features:
@@ -27,14 +24,15 @@ Examples
 ============
 
 * http://softwaremaniacs.org/blog/ (Ivan Sagalaev)
+* https://prudnitskiy.pro/ (Pavel Rudnitskiy)
 * http://adw0rd.com/ (Mikhail Andreev)
-* http://iryndin.net/ (Ivan Ryndin)
 
 About marcus
 =============
 
 * http://softwaremaniacs.org/blog/2010/07/19/marcus-bilingual-blog/
 * http://softwaremaniacs.org/blog/2012/10/21/marcus-new-life/
+* http://adw0rd.com/2012/8/8/goodbye-wordpress/
 
 Screenshots:
 =============
@@ -55,7 +53,9 @@ Installation
 http://pypi.python.org/pypi/django-marcus
 ::
 
-    pip install django-marcus
+    mkvirtualenv marcus
+    pip install --process-dependency-links django-marcus  # use "--process-dependency-links" for pip>=1.5
+    django-admin.py startproject <project_name>
 
 
 Configuration
@@ -72,6 +72,12 @@ Add to ``settings.py``::
     LOCALE_PATHS = (
         os.path.join(imp.find_module('marcus')[1], 'locale'),
     )
+
+    ADMINS = (
+        ('Admin', 'admin@example.com'),
+    )
+    // Please setup settings.MANAGERS for notify about new comments
+    MANAGERS = ADMINS
 
     MARCUS_PAGINATE_BY = 20
     MARCUS_ARTICLES_ON_INDEX = 10
@@ -144,7 +150,6 @@ Add to ``settings.py``::
         'django.contrib.staticfiles',
         'django.contrib.flatpages',
         'marcus',
-        'subhub',
         'scipio',
     )
 
@@ -233,7 +238,7 @@ Installation guide for new projects:
 
     django-admin.py startproject project
     cd project
-    pip install django-marcus
+    pip install --process-dependency-links django-marcus  # use "--process-dependency-links" for pip>=1.5
     ... Copy the settings to settings.py and you urls to you urls.py described above ...
     python ./manage.py syncdb
     python ./manage.py createsuperuser
@@ -244,3 +249,16 @@ Go to https://akismet.com/signup/, get a **key** and enter it here::
     SCIPIO_AKISMET_KEY = '<key>'
 
 After installation, going to http://localhost:8000/admin/scipio/profile/ and create you profile.
+
+MySQL Timezone Fixes
+=====================
+
+If you use MySQL and have problem with open an article by URL, it is likely that you did not work ``CONVERT_TZ``, it can be solved as follows::
+
+    mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root -p mysql
+
+
+License
+========
+
+BSD licensed.

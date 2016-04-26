@@ -2,9 +2,8 @@ import re
 import hashlib
 import pytils
 import pingdjack
-import subhub
 import itertools
-from datetime import datetime
+
 from scipio.models import Profile
 
 from django.db import models
@@ -14,7 +13,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.utils.safestring import mark_safe
-from django.utils.text import truncate_words
+from django.utils.text import Truncator
 from django.utils.html import strip_tags
 from django.utils.functional import curry
 from django.utils.translation import ugettext as _
@@ -185,23 +184,6 @@ class Article(models.Model):
     def __unicode__(self):
         return self.slug
 
-    def _notify_hub(self):
-        def languages():
-            if self.text_ru:
-                yield 'ru'
-            if self.text_en:
-                yield 'en'
-            if self.text_ru and self.text_en:
-                yield None
-
-        for language in languages():
-            topics = [utils.iurl(reverse('marcus-feed'), language)] + \
-                     [c.get_feed_url(language) for c in self.categories.all()]
-            subhub.publish(
-                [utils.absolute_url(t) for t in topics],
-                utils.absolute_url(self.get_absolute_url(language)),
-            )
-
     def _pingback(self):
         if settings.DEBUG:
             return None
@@ -222,7 +204,6 @@ class Article(models.Model):
                 transaction.commit()
             if not already_published:
                 self._pingback()
-            self._notify_hub()
 
     def only_language(self):
         return None if (self.text_en and self.text_ru) else 'en' if self.text_en else 'ru'
@@ -259,7 +240,7 @@ class Article(models.Model):
     def get_admin_url(self):
         viewname = "admin:{0}_{1}_change".format(
             self._meta.app_label,
-            self._meta.module_name)
+            self._meta.model_name)
         return reverse(viewname, args=(self.pk, ))
 
     def title(self, language=None):
@@ -281,7 +262,7 @@ class Article(models.Model):
     html.needs_language = True
 
     def summary(self, language=None):
-        return mark_safe(truncate_words(strip_tags(self.html(language)), 50))
+        return mark_safe(Truncator(strip_tags(self.html(language))).words(50))
     summary.needs_language = True
 
     def intro(self, language=None):
@@ -340,9 +321,9 @@ class Comment(models.Model):
     guest_name = models.CharField(max_length=255, blank=True)
     guest_email = models.CharField(max_length=200, blank=True, default='')
     guest_url = models.URLField(blank=True)
-    ip = models.IPAddressField(default='127.0.0.1')
+    ip = models.GenericIPAddressField(default='127.0.0.1')
     spam_status = models.CharField(max_length=20, blank=True, default='')
-    created = models.DateTimeField(default=datetime.now, db_index=True)
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
     approved = models.DateTimeField(null=True, blank=True, db_index=True)
     noteworthy = models.BooleanField(default=False)
     followup = models.BooleanField(
@@ -369,7 +350,7 @@ class Comment(models.Model):
     def get_admin_url(self):
         viewname = "admin:{0}_{1}_change".format(
             self._meta.app_label,
-            self._meta.module_name)
+            self._meta.model_name)
         return reverse(viewname, args=(self.pk, ))
 
     def html(self):
@@ -377,7 +358,7 @@ class Comment(models.Model):
         return mark_safe(html)
 
     def summary(self):
-        return mark_safe(truncate_words(strip_tags(self.html()), 50))
+        return mark_safe(Truncator(strip_tags(self.html())).words(50))
 
     def by_guest(self):
         return self.author.username == 'marcus_guest'

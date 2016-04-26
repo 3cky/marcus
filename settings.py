@@ -85,7 +85,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.flatpages',
     'marcus',
-    'subhub',
     'scipio',
 )
 
