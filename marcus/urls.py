@@ -46,6 +46,5 @@ urlpatterns = patterns(
 
     url(r'^about/$', flatpages.flatpage, {'url': '/about/'}, name='flatpage-about'),
 
-    url(r'^', include('subhub.urls')),
     url(r'^', include('scipio.urls')),
 )
