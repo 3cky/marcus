@@ -1,13 +1,12 @@
 import pingdjack
 
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 from django.contrib.flatpages import views as flatpages
 
 from marcus import views, feeds
 
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(r'^(?:(en|ru)/)?$', views.index, name='marcus-index'),
 
     url(r'^category/(?:(en|ru)/)?$', views.category_index, name='marcus-categories'),
@@ -47,4 +46,4 @@ urlpatterns = patterns(
     url(r'^about/$', flatpages.flatpage, {'url': '/about/'}, name='flatpage-about'),
 
     url(r'^', include('scipio.urls')),
-)
+]

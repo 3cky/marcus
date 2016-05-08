@@ -1,12 +1,11 @@
 import django.contrib.sitemaps.views as sitemap_views
 from django.views.decorators.cache import cache_page
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
 from marcus.sitemaps import sitemaps
 
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(
         r'^\.xml$',
         cache_page(3600)(sitemap_views.index),
@@ -16,4 +15,4 @@ urlpatterns = patterns(
         cache_page(3600)(sitemap_views.sitemap),
         {'sitemaps': sitemaps},
         name='sitemaps'),
-)
+]
