@@ -7,10 +7,21 @@
           method="post" id="comment-form">
         <div class="comment-form-input">
             {% if request.user.is_authenticated %}
-                <div style="float:left;margin-right:5px">{{ request.user }}</div>
+                <div class="comment-sign-in-label">{% trans "Leave comment as" %} <a target="_blank" href="{{ request.user.profile.link }}">{{ request.user.get_full_name|default:request.user }}</a> (<a href="{% url 'auth_logout' %}?next={{ request.path }}#comment-form">{% trans "logout" %}</a>)</div>
             {% else %}
+                {% if social_auth_providers %}
+                    <div class="comment-sign-in-label">{% trans "Leave comment using" %}:</div>
+	                <div class="comment-sign-in-providers">
+		                {% for social_auth_provider in social_auth_providers %}
+                            <div class="comment-sign-in-provider">
+    	                       <a class="oa-social-login-provider oa-social-login-provider-{{ social_auth_provider }}" title="{{ social_auth_provider|title }}" href="{% url 'social:begin' social_auth_provider %}?next={{ request.path }}#comment-form"></a>
+	                       </div>
+		                {% endfor %}
+	                </div>
+                    <div class="comment-sign-in-label">{% trans "Or comment anonymously" %}:</div>
+                {% endif %}
                 <div style="float:left;margin-right:5px">
-                    <input id="{{ form.name.auto_id }}" name="{{ form.name.name }}" placeholder="{% trans form.name.label %}"
+                    <input id="{{ form.name.auto_id }}" name="{{ form.name.name }}" placeholder="{{ form.name.label }}"
                            value="{{ form.name.value|default:guest_name }}"
                            class="{% if form.errors.name %}form-error{% endif %}" />
                     <div class="form-errors">
@@ -20,7 +31,7 @@
                     </div>
                 </div>
                 <div>
-                    <input id="{{ form.xemail.auto_id }}" name="{{ form.xemail.name }}" placeholder="{% trans form.xemail.label %}"
+                    <input id="{{ form.xemail.auto_id }}" name="{{ form.xemail.name }}" placeholder="{{ form.xemail.label }}"
                            value="{{ form.xemail.value|default:guest_email }}"
                            class="{% if form.errors.xemail %}form-error{% endif %}" />
                     <div class="form-errors">
@@ -32,7 +43,7 @@
             {% endif %}
         </div>
         <div class="comment-form-input">
-            <textarea id="{{ form.text.auto_id }}" name="{{ form.text.name }}" placeholder="{% trans form.text.label %}"
+            <textarea id="{{ form.text.auto_id }}" name="{{ form.text.name }}" placeholder="{{ form.text.label }}"
                       class="{% if form.errors.text %}form-error{% endif %}">{{ form.text.value|default:"" }}</textarea>
             <div class="form-errors">
                 {% for error in form.errors.text %}
@@ -42,9 +53,6 @@
         </div>
         <input type="submit" value="{% trans "Send to moderation" %}" />
     </form>
-    <div style="margin-left: 800px;">
-        <img src="{% static "images/markdown-legend.png" %}" alt="Markdown" />
-    </div>
     <br clear="all" />
     <script type="text/javascript">
         var form = document.getElementById('comment-form');

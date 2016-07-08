@@ -46,4 +46,6 @@ urlpatterns = [
     url(r'^about/$', flatpages.flatpage, {'url': '/about/'}, name='flatpage-about'),
 
     url(r'^', include('scipio.urls')),
+
+    url('', include('social.apps.django_app.urls', namespace='social')),
 ]

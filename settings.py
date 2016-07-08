@@ -60,6 +60,9 @@ SCIPIO_USE_CONTRIB_SITES = True
 AUTHENTICATION_BACKENDS = (
     'scipio.authentication.OpenIdBackend',
     'django.contrib.auth.backends.ModelBackend',
+    'social.backends.facebook.FacebookOAuth2',
+    'social.backends.twitter.TwitterOAuth',
+    # Add other social auth backends here if needed
 )
 
 TEMPLATES = [
@@ -72,6 +75,8 @@ TEMPLATES = [
                 'marcus.context_processors.marcus_context',
                 'django.contrib.auth.context_processors.auth',
                 'django.template.context_processors.request',
+                'social.apps.django_app.context_processors.backends',
+                'social.apps.django_app.context_processors.login_redirect',
             ],
         },
     },
@@ -95,6 +100,7 @@ INSTALLED_APPS = (
     'django.contrib.flatpages',
     'marcus',
     'scipio',
+    'social.apps.django_app.default',
 )
 
 MARCUS_WORDPRESS_IMPORTER = {
@@ -117,3 +123,27 @@ MARCUS_WORDPRESS_IMPORTER = {
         'www.my-old-blog-on-wordpress.org',
     ),
 }
+
+SOCIAL_AUTH_PIPELINE = (
+    'social.pipeline.social_auth.social_details',
+    'social.pipeline.social_auth.social_uid',
+    'social.pipeline.social_auth.auth_allowed',
+    'social.pipeline.social_auth.social_user',
+    'social.pipeline.user.get_username',
+#    'social.pipeline.mail.mail_validation',
+#    'social.pipeline.social_auth.associate_by_email',
+    'social.pipeline.user.create_user',
+    'marcus.social.pipeline.save_profile',
+    'social.pipeline.social_auth.associate_user',
+    'social.pipeline.social_auth.load_extra_data',
+    'social.pipeline.user.user_details'
+)
+
+SOCIAL_AUTH_PROVIDERS = None # Example: ['facebook', 'twitter']
+
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+SOCIAL_AUTH_FACEBOOK_KEY = ""
+SOCIAL_AUTH_FACEBOOK_SECRET = ""
+
+SOCIAL_AUTH_TWITTER_KEY = ''
+SOCIAL_AUTH_TWITTER_SECRET = ''

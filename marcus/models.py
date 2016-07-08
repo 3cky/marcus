@@ -366,6 +366,8 @@ class Comment(models.Model):
     def author_str(self):
         if self.by_guest():
             return self.guest_name
+        if self.author.get_full_name():
+            return self.author.get_full_name()
         try:
             return unicode(self.author.scipio_profile)
         except Profile.DoesNotExist:
@@ -373,10 +375,17 @@ class Comment(models.Model):
 
     def author_url(self):
         try:
+            return self.author.profile.link
+        except (UserProfile.DoesNotExist, AttributeError):
+            pass
+        try:
             return self.author.scipio_profile.openid
         except (Profile.DoesNotExist, AttributeError):
             return None
 
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, related_name="profile")
+    link = models.URLField(blank=True)
 
 def update_tag_and_category_counts(sender, instance, created, **kwargs):
     """Recalculation a counts for articles

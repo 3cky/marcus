@@ -295,10 +295,25 @@ tt.more {
     width: 100%;
     height: 170px;
 }
-    .comment-form-input .form-error {
-        border: solid 1px red;
-        margin: 2px 1px;
-    }
+.comment-form-input .form-error {
+    border: solid 1px red;
+    margin: 2px 1px;
+}
+.comment-sign-in-label {
+    font-size: 85%;
+    color: #575757;
+    padding-bottom: 5px;
+}
+.comment-sign-in-providers {
+    height: 45px;
+    overflow: hidden;
+    position: relative;
+}
+.comment-sign-in-provider {
+    width: 40px;
+    text-align: center !important;
+    float: left;
+}
 
 blockquote.download {
     background: url("/static/images/download.gif") no-repeat scroll left top #D4FFC6;
@@ -323,4 +338,36 @@ i.smorg_star {
 
 .fb-share-button > span {
   vertical-align: baseline !important;
+}
+
+.oa-social-login-provider {
+  background-image: url("/static/images/oa_providers.png");
+  text-indent: -9999px;
+  height: 35px;
+  width: 35px;
+  display: inline-block;
+}
+
+.oa-social-login-provider-facebook {
+  background-position: -2px -1px;
+}
+
+.oa-social-login-provider-twitter {
+  background-position: -39px -1px;
+}
+
+.oa-social-login-provider-google {
+  background-position: -76px -1px;
+}
+
+.oa-social-login-provider-github {
+  background-position: -113px -1px;
+}
+
+.oa-social-login-provider-vkontakte {
+  background-position: -150px -1px;
+}
+
+.oa-social-login-provider-livejournal {
+  background-position: -187px -1px;
 }

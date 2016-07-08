@@ -1,4 +1,5 @@
 from django import forms
+from django.utils import translation
 from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User
 
@@ -11,17 +12,18 @@ def model_field(model, fieldname, **kwargs):
 
 
 class CommentForm(forms.Form):
-    text = model_field(
-        models.Comment, 'text', label=_(u'Text'), widget=forms.Textarea(attrs={'cols': '80', 'rows': '20'}))
-    language = model_field(
-        models.Comment, 'language', required=False)
-    name = forms.CharField(
-        label=_(u'Name or OpenID'), required=False)
-    xemail = forms.EmailField(
-        label=_(u'Email for notifications'), required=False)
+    text = model_field(models.Comment, 'text',
+                       widget=forms.Textarea(attrs={'cols': '80', 'rows': '20'}))
+    language = model_field(models.Comment, 'language', required=False)
+    name = forms.CharField(required=False)
+    xemail = forms.EmailField(required=False)
 
     def __init__(self, user=None, ip=None, article=None, language=None, *args, **kwargs):
         super(CommentForm, self).__init__(*args, **kwargs)
+        translation.activate(language or 'ru')
+        self.fields['text'].label = _(u'Text')
+        self.fields['name'].label = _(u'Name')
+        self.fields['xemail'].label = _(u'Email for notifications (will not be published)')
         if user and not user.is_authenticated():
             user = User.objects.get(username='marcus_guest')
         self.user = user

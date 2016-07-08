@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-12 17:33+0400\n"
+"POT-Creation-Date: 2016-07-03 23:46+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,193 +19,171 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: marcus/templates/base.html:52
-#: marcus/templates/marcus/index.html:4
-#: marcus/templates/marcus/spam_queue.html:4
-msgid "Blog"
-msgstr "Блог"
-
-#: marcus/actions.py:11
+#: actions.py:10
 msgid "Make approved"
 msgstr "Сделать утвержденным"
 
-#: marcus/feeds.py:160
-#: marcus/feeds.py:209
+#: feeds.py:151
+#: feeds.py:200
 msgid "comments"
 msgstr "комментарии"
 
-#: marcus/forms.py:15
-#: marcus/models.py:338
+#: forms.py:15
+#: models.py:318
 msgid "Text"
 msgstr "Текст"
 
-#: marcus/forms.py:19
-msgid "Name or OpenID"
-msgstr "Имя или OpenID"
+#: forms.py:19
+msgid "Name"
+msgstr "Имя"
 
-#: marcus/forms.py:21
-msgid "Email for notifications"
-msgstr "Email для уведомлений"
+#: forms.py:21
+msgid "Email for notifications (will not be published)"
+msgstr "Email для уведомлений (не будет опубликован)"
 
-#: marcus/forms.py:41
-#: marcus/forms.py:48
+#: forms.py:41
+#: forms.py:48
 msgid "This field is required."
 msgstr "Это поле является обязательным."
 
-#: marcus/forms.py:50
+#: forms.py:50
 msgid "This name is already taken."
 msgstr "Это имя уже занято."
 
-#: marcus/models.py:317
+#: models.py:297
 msgid "Comment"
 msgstr "Комментарий"
 
-#: marcus/models.py:322
+#: models.py:302
 msgid "Russian"
 msgstr "Русский"
 
-#: marcus/models.py:323
-#: marcus/views.py:379
+#: models.py:303
+#: views.py:387
 msgid "English"
 msgstr "Английский"
 
-#: marcus/models.py:339
+#: models.py:319
 msgid "Language"
 msgstr "Язык"
 
-#: marcus/models.py:350
+#: models.py:330
 msgid "Receive by email further comments in this conversation"
 msgstr "Получать по электронной почте уведомления о новых комментариях в этой теме"
 
-#: marcus/views.py:378
-msgid "All"
-msgstr "Все"
-
-#: marcus/templates/404.html:4
-#: marcus/templates/404.html.py:7
+#: templates/404.html:4
+#: templates/404.html.py:7
 msgid "Page not found"
 msgstr "Страница не найдена"
 
-#: marcus/templates/base.html:5
+#: templates/base.html:5
 msgid "Main page"
 msgstr "Главная страница"
 
-#: marcus/templates/base.html:53
+#: templates/base.html:52
+#: templates/marcus/index.html.py:4
+#: templates/marcus/spam_queue.html:4
+msgid "Blog"
+msgstr "Блог"
+
+#: templates/base.html:53
 msgid "About"
 msgstr "Об авторе"
 
-#: marcus/templates/base.html:64
+#: templates/base.html:64
 msgid "Powered by"
 msgstr "Работает на"
 
-#: marcus/templates/base.html:65
+#: templates/base.html:65
 msgid "and"
 msgstr "и"
 
-#: marcus/templates/marcus/archive-index.html:4
+#: templates/marcus/archive-index.html:4
 msgid "Archive"
 msgstr "Архив"
 
-#: marcus/templates/marcus/archive.html:4
+#: templates/marcus/archive.html:4
 msgid "Archive for"
 msgstr "Архив за"
 
-#: marcus/templates/marcus/article.html:27
+#: templates/marcus/article.html:27
 msgid "Edit"
 msgstr "Редактировать"
 
-#: marcus/templates/marcus/article.html:29
-#: marcus/templates/marcus/category_list.html:4
-#: marcus/templates/marcus/index.html:23
+#: templates/marcus/article.html:29
+#: templates/marcus/category_list.html.py:4
+#: templates/marcus/index.html:24
 msgid "Categories"
 msgstr "Рубрики"
 
-#: marcus/templates/marcus/article.html:30
+#: templates/marcus/article.html:30
 msgid "Tweet this"
 msgstr "Твитнуть"
 
-#: marcus/templates/marcus/article.html:31
-#: marcus/templates/marcus/index.html:33
-#: marcus/templates/marcus/tag_list.html:4
+#: templates/marcus/article.html:31
+#: templates/marcus/index.html.py:34
+#: templates/marcus/tag_list.html:4
 msgid "Tags"
 msgstr "Теги"
 
-#: marcus/templates/marcus/article.html:35
+#: templates/marcus/article.html:35
 msgid "Comments"
 msgstr "Комментарии"
 
-#: marcus/templates/marcus/article_choice_list.html:4
+#: templates/marcus/article_choice_list.html:4
 msgid "Articles starts with slug"
 msgstr "Статьи, начинающиеся с адреса"
 
-#: marcus/templates/marcus/comments.html:43
-msgid "Send to moderation"
-msgstr "Отправить на премодерацию"
-
-#: marcus/templates/marcus/comments.html:54
-msgid "The article is closed for comments"
-msgstr "Статья закрыта для комментариев"
-
-#: marcus/templates/marcus/search.html:4
-msgid "Search for"
-msgstr "Поиск по"
-
-#: marcus/templates/marcus/spam.html:4
-msgid "Spam detected"
-msgstr "Обнаружен спам"
-
-#: marcus/templates/marcus/spam.html:7
-msgid "We decided that this comment is spam!"
-msgstr "Мы решили, что данный комментарий является спамом!"
-
-#: marcus/templates/marcus/spam.html:9
-msgid "Please fix it..."
-msgstr "Пожалуйста, исправьте это..."
-
-#: marcus/templates/marcus/spam_queue.html:8
-msgid "Spam queue"
-msgstr "Спам-очередь"
-
-#: marcus/templates/marcus/unsubscribe.html:4
-msgid "Unsubscribe"
-msgstr "Отказаться от подписки"
-
-#: marcus/templates/marcus/unsubscribe.html:8
-#, python-format
-msgid "Dear %(guest_name)s!"
-msgstr "Уважаемый %(guest_name)s!"
-
-#: marcus/templates/marcus/unsubscribe.html:9
-#, python-format
-msgid "You have just unsubscribed from article %(article_link)s."
-msgstr "Вы отказались от подписки на статью %(article_link)s."
-
-#: marcus/templates/marcus/blocks/articles.html:20
+#: templates/marcus/blocks/articles.html:20
 msgid "Read the article"
 msgstr "Читать статью"
 
-#: marcus/templates/marcus/blocks/articles.html:31
+#: templates/marcus/blocks/articles.html:31
 msgid "Articles not found"
 msgstr "Статей не найдено"
 
-#: marcus/templates/marcus/blocks/comments.html:7
+#: templates/marcus/blocks/comments.html:7
 msgid "Noteworthy comment"
 msgstr "Комментарий, достойный внимания"
 
-#: marcus/templates/marcus/blocks/comments.html:8
+#: templates/marcus/blocks/comments.html:8
 msgid "Comment is awaiting approval"
 msgstr "Комментарий ожидает подтверждения"
 
-#: marcus/templates/marcus/blocks/search.html:4
+#: templates/marcus/blocks/search.html:4
 msgid "Type something and press Enter"
 msgstr "Введите что-нибудь и нажмите Enter"
 
-#: marcus/templates/marcus/blocks/search.html:5
+#: templates/marcus/blocks/search.html:5
 msgid "Find"
 msgstr "Найти"
 
-#: marcus/templates/marcus/emails/followup_comment.html:2
-#: marcus/templates/marcus/emails/managers_comment.html:2
+#: templates/marcus/comments.html:10
+msgid "Leave comment as"
+msgstr "Оставить комментарий как"
+
+#: templates/marcus/comments.html:10
+msgid "logout"
+msgstr "выйти"
+
+#: templates/marcus/comments.html:13
+msgid "Leave comment using"
+msgstr "Использовать аккаунт"
+
+#: templates/marcus/comments.html:21
+msgid "Or comment anonymously"
+msgstr "Или оставить комментарий анонимно"
+
+#: templates/marcus/comments.html:54
+msgid "Send to moderation"
+msgstr "Отправить на премодерацию"
+
+#: templates/marcus/comments.html:62
+msgid "The article is closed for comments"
+msgstr "Статья закрыта для комментариев"
+
+#: templates/marcus/emails/followup_comment.html:2
+#: templates/marcus/emails/managers_comment.html:2
 #, python-format
 msgid ""
 "You're receiving this email because subscribed to comments to "
@@ -213,28 +191,28 @@ msgid ""
 msgstr "Вы получили это сообщение потому, что подписаны на обновление статьи "
 "%(article_link)s."
 
-#: marcus/templates/marcus/emails/followup_comment.html:4
-#: marcus/templates/marcus/emails/followup_comment.txt:5
-#: marcus/templates/marcus/emails/managers_comment.html:4
-#: marcus/templates/marcus/emails/managers_comment.txt:5
+#: templates/marcus/emails/followup_comment.html:4
+#: templates/marcus/emails/followup_comment.txt:5
+#: templates/marcus/emails/managers_comment.html:4
+#: templates/marcus/emails/managers_comment.txt:5
 #, python-format
 msgid "The user \"%(comment_guest_name)s\" say:"
 msgstr "Пользователь \"%(comment_guest_name)s\" сказал:"
 
-#: marcus/templates/marcus/emails/followup_comment.html:7
-#: marcus/templates/marcus/emails/followup_comment.txt:8
-#: marcus/templates/marcus/emails/managers_comment.html:7
-#: marcus/templates/marcus/emails/managers_comment.txt:8
+#: templates/marcus/emails/followup_comment.html:7
+#: templates/marcus/emails/followup_comment.txt:8
+#: templates/marcus/emails/managers_comment.html:7
+#: templates/marcus/emails/managers_comment.txt:8
 msgid "Comment published:"
 msgstr "Комментарий:"
 
-#: marcus/templates/marcus/emails/followup_comment.html:9
-#: marcus/templates/marcus/emails/followup_comment.txt:10
+#: templates/marcus/emails/followup_comment.html:9
+#: templates/marcus/emails/followup_comment.txt:10
 msgid "To unsubscribe, go to:"
 msgstr "Чтобы отказаться от подписки, перейдите к"
 
-#: marcus/templates/marcus/emails/followup_comment.txt:2
-#: marcus/templates/marcus/emails/managers_comment.txt:2
+#: templates/marcus/emails/followup_comment.txt:2
+#: templates/marcus/emails/managers_comment.txt:2
 #, python-format
 msgid ""
 "You're receiving this email because subscribed to comments to "
@@ -242,9 +220,51 @@ msgid ""
 msgstr "Вы получили это сообщение потому, что подписаны на обновление статьи "
 "\"%(article_title)s\"."
 
-#: marcus/templates/marcus/emails/followup_comment_subject.txt:1
-#: marcus/templates/marcus/emails/managers_comment_subject.txt:1
+#: templates/marcus/emails/followup_comment_subject.txt:1
+#: templates/marcus/emails/managers_comment_subject.txt:1
 #, python-format
 msgid "New comment in \"%(article_title)s\""
 msgstr "Новый комментарий в \"%(article_title)s\""
+
+#: templates/marcus/index.html:22
+msgid "Profile image"
+msgstr "Изображение из профиля"
+
+#: templates/marcus/search.html:4
+msgid "Search for"
+msgstr "Поиск по"
+
+#: templates/marcus/spam.html:4
+msgid "Spam detected"
+msgstr "Обнаружен спам"
+
+#: templates/marcus/spam.html:7
+msgid "We decided that this comment is spam!"
+msgstr "Мы решили, что данный комментарий является спамом!"
+
+#: templates/marcus/spam.html:9
+msgid "Please fix it..."
+msgstr "Пожалуйста, исправьте это..."
+
+#: templates/marcus/spam_queue.html:8
+msgid "Spam queue"
+msgstr "Спам-очередь"
+
+#: templates/marcus/unsubscribe.html:4
+msgid "Unsubscribe"
+msgstr "Отказаться от подписки"
+
+#: templates/marcus/unsubscribe.html:8
+#, python-format
+msgid "Dear %(guest_name)s!"
+msgstr "Уважаемый %(guest_name)s!"
+
+#: templates/marcus/unsubscribe.html:9
+#, python-format
+msgid "You have just unsubscribed from article %(article_link)s."
+msgstr "Вы отказались от подписки на статью %(article_link)s."
+
+#: views.py:386
+msgid "All"
+msgstr "Все"
 
