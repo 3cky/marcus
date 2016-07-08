@@ -15,7 +15,7 @@ from django.utils import timezone
 def absolute_url(url):
     if url is None or url.startswith('http://') or url.startswith('https://'):
         return url
-    return 'http://%s%s' % (Site.objects.get_current().domain, url)
+    return 'https://%s%s' % (Site.objects.get_current().domain, url)
 
 
 def iurl(url, language):

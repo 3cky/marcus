@@ -281,7 +281,7 @@ class Article(models.Model):
 
     def full_link(self, language=None):
         current_site = Site.objects.get_current()
-        url = "http://{domain}{url}".format(domain=current_site.domain, url=self.get_absolute_url(language))
+        url = "https://{domain}{url}".format(domain=current_site.domain, url=self.get_absolute_url(language))
         return u'<a href="{url}">{title}</a>'.format(url=url, title=self.title(language))
     html.needs_language = True
 
