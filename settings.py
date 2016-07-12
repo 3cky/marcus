@@ -62,6 +62,9 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'social.backends.facebook.FacebookOAuth2',
     'social.backends.twitter.TwitterOAuth',
+    'social.backends.google.GoogleOAuth2',
+    'social.backends.github.GithubOAuth2',
+    'social.backends.vk.VKOAuth2',
     # Add other social auth backends here if needed
 )
 
@@ -147,3 +150,13 @@ SOCIAL_AUTH_FACEBOOK_SECRET = ""
 
 SOCIAL_AUTH_TWITTER_KEY = ''
 SOCIAL_AUTH_TWITTER_SECRET = ''
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = ''
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ''
+
+SOCIAL_AUTH_GITHUB_KEY = ''
+SOCIAL_AUTH_GITHUB_SECRET = ''
+
+SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
+SOCIAL_AUTH_VK_OAUTH2_KEY = ''
+SOCIAL_AUTH_VK_OAUTH2_SECRET = ''

@@ -9,10 +9,21 @@ def save_profile(backend, user, response, *args, **kwargs):
         profile = UserProfile(user=user)
         profile.save()
 
-    if backend.name == 'facebook':
-        profile.link = response.get('link')
-        profile.save()
-    elif backend.name == 'twitter':
-        profile.link = 'https://twitter.com/' + user.username
-        profile.save()
+    from pprint import pprint
+    pprint(response)
 
+    link = None
+    if backend.name == 'facebook':
+        link = response.get('link')
+    elif backend.name == 'twitter':
+        link = 'https://twitter.com/' + user.username
+    elif backend.name == 'google-oauth2':
+        link = response.get('url')
+    elif backend.name == 'github':
+        link = response.get('html_url')
+    elif backend.name == 'vk-oauth2':
+        link = 'https://vk.com/' + response.get('screen_name')
+
+    if link:
+        profile.link = link
+        profile.save()
