@@ -12,3 +12,7 @@ def save_profile(backend, user, response, *args, **kwargs):
     if backend.name == 'facebook':
         profile.link = response.get('link')
         profile.save()
+    elif backend.name == 'twitter':
+        profile.link = 'https://twitter.com/' + user.username
+        profile.save()
+
