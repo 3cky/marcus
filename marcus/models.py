@@ -387,6 +387,9 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, related_name="profile")
     link = models.URLField(blank=True)
 
+    def __str__(self):
+        return self.user.username
+
 def update_tag_and_category_counts(sender, instance, created, **kwargs):
     """Recalculation a counts for articles
     """

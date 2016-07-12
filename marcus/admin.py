@@ -1,5 +1,7 @@
 from django import forms
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User
 
 try:
     from markitup.widgets import AdminMarkItUpWidget
@@ -127,3 +129,16 @@ class CommentAdmin(admin.ModelAdmin):
     created_str.short_description = 'created'
 
 admin.site.register(models.Comment, CommentAdmin)
+
+
+class UserProfileInline(admin.StackedInline):
+    model = models.UserProfile
+    can_delete = False
+    verbose_name_plural = 'Profile Data'
+
+class UserAdmin(UserAdmin):
+    inlines = (UserProfileInline, )
+    list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'is_active')
+
+admin.site.unregister(User)
+admin.site.register(User, UserAdmin)
