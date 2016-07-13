@@ -142,7 +142,15 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.user.user_details'
 )
 
-SOCIAL_AUTH_PROVIDERS = None # Example: ['facebook', 'twitter']
+SOCIAL_AUTH_PROVIDERS = None
+# Example:
+# SOCIAL_AUTH_PROVIDERS = collections.OrderedDict([
+#                             ('facebook', 'Facebook'),
+#                             ('twitter', 'Twitter'),
+#                             ('google-oauth2', 'Google'),
+#                             ('github', 'GitHub'),
+#                             ('vk-oauth2', 'VK.com'),
+#                         ])
 
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 SOCIAL_AUTH_FACEBOOK_KEY = ""

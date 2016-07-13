@@ -12,9 +12,9 @@
                 {% if social_auth_providers %}
                     <div class="comment-sign-in-label">{% trans "Leave comment using" %}:</div>
 	                <div class="comment-sign-in-providers">
-		                {% for social_auth_provider in social_auth_providers %}
+		                {% for social_auth_provider_id, social_auth_provider_name in social_auth_providers.items %}
                             <div class="comment-sign-in-provider">
-    	                       <a class="oa-social-login-provider oa-social-login-provider-{{ social_auth_provider }}" title="{{ social_auth_provider|title }}" href="{% url 'social:begin' social_auth_provider %}?next={{ request.path }}#comment-form"></a>
+    	                       <a class="oa-social-login-provider oa-social-login-provider-{{ social_auth_provider_id }}" title="{% trans social_auth_provider_name %}" href="{% url 'social:begin' social_auth_provider_id %}?next={{ request.path }}#comment-form"></a>
 	                       </div>
 		                {% endfor %}
 	                </div>
@@ -51,7 +51,11 @@
                 {% endfor %}
             </div>
         </div>
-        <input type="submit" value="{% trans "Send to moderation" %}" />
+        {% if request.user.is_authenticated %}
+            <input type="submit" value="{% trans "Send" %}" />
+        {% else %}
+            <input type="submit" value="{% trans "Send to moderation" %}" />
+        {% endif %}
     </form>
     <br clear="all" />
     <script type="text/javascript">
