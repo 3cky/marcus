@@ -9,8 +9,8 @@ def save_profile(backend, user, response, *args, **kwargs):
         profile = UserProfile(user=user)
         profile.save()
 
-    from pprint import pprint
-    pprint(response)
+#     from pprint import pprint
+#     pprint(response)
 
     link = None
     if backend.name == 'facebook':

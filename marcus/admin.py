@@ -112,7 +112,7 @@ admin.site.register(models.ArticleUpload, ArticleUploadAdmin)
 class CommentAdmin(admin.ModelAdmin):
     save_on_top = True
     actions = (actions.make_approved, )
-    list_display = ('pk', 'article', 'author_str', 'type', 'created_str', 'is_approved', )
+    list_display = ('pk', 'article', 'author_str', 'created_str', 'spam_status', 'is_approved', )
     list_filter = (('approved', TimedBooleanFilter), )
     ordering = ('-created', )
     select_related = ('article', )

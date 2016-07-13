@@ -24,10 +24,17 @@ class AkismetHandler(akismet.AkismetBaseHandler):
             'comment_content': smart_str(comment.text),
         }
 
+    def validate(self, request, **kwargs):
+        status = akismet.AkismetBaseHandler.validate(self, request, **kwargs)
+        if status:
+            return status
+        return 'clean'
+
 
 class Paranoia(object):
     def validate(self, request, **kwargs):
         return 'paranoia'
+
 
 conveyor = antispam.Conveyor([
     antispam.WhitelistHandler(),

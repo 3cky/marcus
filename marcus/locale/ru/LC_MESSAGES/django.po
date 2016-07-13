@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-07-03 23:46+0300\n"
+"POT-Creation-Date: 2016-07-12 19:02+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,25 +28,25 @@ msgstr "Сделать утвержденным"
 msgid "comments"
 msgstr "комментарии"
 
-#: forms.py:15
+#: forms.py:24
 #: models.py:318
 msgid "Text"
 msgstr "Текст"
 
-#: forms.py:19
+#: forms.py:25
 msgid "Name"
 msgstr "Имя"
 
-#: forms.py:21
+#: forms.py:26
 msgid "Email for notifications (will not be published)"
 msgstr "Email для уведомлений (не будет опубликован)"
 
-#: forms.py:41
-#: forms.py:48
+#: forms.py:43
+#: forms.py:50
 msgid "This field is required."
 msgstr "Это поле является обязательным."
 
-#: forms.py:50
+#: forms.py:52
 msgid "This name is already taken."
 msgstr "Это имя уже занято."
 
@@ -174,11 +174,15 @@ msgstr "Использовать аккаунт"
 msgid "Or comment anonymously"
 msgstr "Или оставить комментарий анонимно"
 
-#: templates/marcus/comments.html:54
+#: templates/marcus/comments.html:55
+msgid "Send"
+msgstr "Отправить"
+
+#: templates/marcus/comments.html:57
 msgid "Send to moderation"
 msgstr "Отправить на премодерацию"
 
-#: templates/marcus/comments.html:62
+#: templates/marcus/comments.html:66
 msgid "The article is closed for comments"
 msgstr "Статья закрыта для комментариев"
 
