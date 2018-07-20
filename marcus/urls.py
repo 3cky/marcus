@@ -47,5 +47,5 @@ urlpatterns = [
 
     url(r'^', include('scipio.urls')),
 
-    url('', include('social.apps.django_app.urls', namespace='social')),
+    url('', include('social_django.urls', namespace='social')),
 ]
