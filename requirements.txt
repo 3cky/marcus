@@ -7,7 +7,7 @@ python-openid>=2.2.5
 mistune>=0.2.0
 social-auth-app-django>=2.1.0
 
--e git+git://github.com/adw0rd/scipio.git#egg=adw0rd-scipio
+-e git+git://github.com/adw0rd/scipio.git#egg=scipio
 
 # wordpress_importer command required:
 html2text>=3.200.3
