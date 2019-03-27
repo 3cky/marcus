@@ -240,6 +240,7 @@ class Article(models.Model):
 
     def html(self, language=None):
         html = markdown.render(self._language_text(language))
+        html = re.sub(r'<a name="more">.*</a>', '<a name="more"></a>', html)
         return mark_safe(html)
     html.needs_language = True
 
@@ -248,11 +249,16 @@ class Article(models.Model):
     summary.needs_language = True
 
     def intro(self, language=None):
-        result = markdown.render(self._language_text(language))
-        pattern = re.compile(r'^(.*)<a name="more"></a>.*', re.S)
-        match = re.match(pattern, result)
-        return match and mark_safe(match.group(1))
+        pattern = re.compile(r'^(.*)<a name="more">.*</a>.*', re.S)
+        match = re.match(pattern, self._language_text(language))
+        return match and mark_safe(markdown.render(match.group(1)))
     intro.needs_language = True
+
+    def more(self, language=None):
+        pattern = re.compile(r'^.*<a name="more">(.+)</a>.*', re.S)
+        match = re.match(pattern, self._language_text(language))
+        return match and mark_safe(strip_tags(match.group(1)))
+    more.needs_language = True
 
     def link(self, language=None):
         return u'<a href="{url}">{title}</a>'.format(

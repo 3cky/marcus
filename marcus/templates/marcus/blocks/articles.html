@@ -11,15 +11,15 @@
         </tr>
         {% if forloop.first and forloop.parentloop.first %}
             <tr>
-                <td colspan="2">
+                <td colspan="2">{% with intro=article.intro more=article.more %}{% if intro %}
                     <div class="article-text">
-                        {{ article.intro }}
-                    </div>
+                        {{ intro }}
+                    </div>{% endif %}
                     <tt class="more">
                         <a href="{% iurl 'marcus-article' article.published.year article.published.month article.published.day article.slug %}#more">
-                            {% trans "Read the article" %} →
+                            {% if more %}{{ more }}{% else %}{% trans "Read the article" %}{% endif %} →
                         </a>
-                    </tt>
+                    </tt>{% endwith %}
                     <br />
                     <br />
                 </td>
