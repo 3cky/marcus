@@ -7,4 +7,6 @@ django_marcus.egg-info/
 build/
 .settings/
 .eggs/
+.project
+.pydevproject
 build/
