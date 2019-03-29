@@ -1,0 +1,19 @@
+{% load i18n %}
+{% load static %}
+
+{% if import_js %}
+    <script type="text/javascript" src="{% static "likes/likes.js" %}"></script>
+{% endif %}
+
+{% if likes_enabled %}
+    <div class="likes">
+	    <div class="likes-container">
+	        {% if can_vote %}
+	            <a class="likes-link" href="{% url "like" content_type content_obj.id 1 %}" rel="nofollow"><span class="likes-heart"></span></a>
+	            <span class="likes-text">Like! {{ content_obj.vote_total }}</span>
+	        {% else %}
+	            <span class="likes-heart-active"></span> <span class="likes-text">Like! {{ content_obj.vote_total }}</span>
+	        {% endif %}
+	    </div>
+    </div>
+{% endif %}

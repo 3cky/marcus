@@ -104,6 +104,8 @@ INSTALLED_APPS = (
     'marcus',
     'scipio',
     'social_django',
+    'secretballot',
+    'likes',
 )
 
 MARCUS_WORDPRESS_IMPORTER = {

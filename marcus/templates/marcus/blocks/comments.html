@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load likes_inclusion_tags %}
 <ul>
     {% for comment in comments %}
         <li class="alt {% if forloop.counter0|divisibleby:"2" %}alt1{% else %}alt2{% endif %}">

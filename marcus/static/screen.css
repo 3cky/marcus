@@ -336,6 +336,10 @@ i.smorg_star {
     width: 16px;
 }
 
+.article-socials {
+  float: right;
+}
+
 .fb-share-button > span {
   vertical-align: baseline !important;
 }
@@ -370,4 +374,79 @@ i.smorg_star {
 
 .oa-social-login-provider-livejournal {
   background-position: -187px -1px;
+}
+
+.likes {
+  display: inline-block;
+  background: palegoldenrod;
+  border: 1px solid gold;
+  color: #cc0000;
+  border-radius: 3px;
+  font-size: 11px;
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  vertical-align: top;
+}
+
+.likes-container {
+  display: block;
+  position: relative;
+  min-width: 70px;
+  min-height: 20px;
+}
+
+.likes-link {
+}
+
+.likes-text {
+  padding-left: 25px;
+  padding-right: 4px;
+  vertical-align: middle;
+  line-height: 20px;
+}
+
+.likes-heart {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  height: 50px;
+  width: 50px;
+  cursor: pointer;
+  background-size: 2900%;
+  background-image: url('/static/likes/images/web_heart_animation_edge.png');
+  background-position: left;
+  background-repeat: no-repeat;
+  transition: background-position 1s steps(28);
+  transition-duration: 0s;
+}
+
+.likes-heart-active {
+margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  height: 50px;
+  width: 50px;
+  background-size: 2900%;
+  background-image: url('/static/likes/images/web_heart_animation_edge.png');
+  background-position: right;
+  background-repeat: no-repeat;
+}
+
+.likes-heart:hover {
+  background-position: right;
+}
+
+.likes-heart-clicked {
+  animation: heart-burst .8s steps(28);
+}
+
+@keyframes heart-burst {
+  from { background-position:left; }
+  to { background-position:right; }
 }

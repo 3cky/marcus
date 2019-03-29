@@ -21,6 +21,7 @@ from marcus import utils
 from marcus import managers
 from marcus import markdown
 
+
 class Translation(object):
     def __init__(self, obj, language):
         super(Translation, self).__init__()
@@ -286,7 +287,6 @@ COMMENT_TYPES = (
     ('comment', _('Comment')),
 )
 
-
 LANGUAGES = (
     ('ru', _(u'Russian')),
     ('en', _(u'English')),
@@ -372,12 +372,14 @@ class Comment(models.Model):
         except (Profile.DoesNotExist, AttributeError):
             return None
 
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User, related_name="profile")
     link = models.URLField(blank=True)
 
     def __str__(self):
         return self.user.username
+
 
 def update_tag_and_category_counts(sender, instance, created, **kwargs):
     """Recalculation a counts for articles

@@ -1,5 +1,6 @@
 {% extends "base_with_sidebar.html"%}
 {% load static i18n marcus_tags %}
+{% load likes_inclusion_tags %}
 
 {% block title %}{{ article.title }}{% endblock %}
 
@@ -27,7 +28,7 @@
                 {% if request.user.is_staff %}, <a href="{{ article.get_admin_url }}">{% trans "Edit" %}</a>{% endif %}
             </div>
             <div>{% trans "Categories" %}: {{ article.categories_links|safeseq|join:", " }}</div>
-            <div style="float:right"><g:plusone align="right" href="{{ share_url }}"></g:plusone>&nbsp;<div class="fb-share-button" data-ref="article" data-href="{{ share_url }}" data-width="106" data-type="button_count"></div>&nbsp;<a href="https://twitter.com/share" class="twitter-share-button" data-url="{{ share_url }}" data-text="{{ share_title }}" data-hashtags="{{ share_suffix }}">{% trans "Tweet this" %}</a></div>
+            <div class="article-socials">{% likes article_obj %}&nbsp;<div class="fb-share-button" data-ref="article" data-href="{{ share_url }}" data-width="106" data-type="button_count"></div>&nbsp;<a href="https://twitter.com/share" class="twitter-share-button" data-url="{{ share_url }}" data-text="{{ share_title }}" data-hashtags="{{ share_suffix }}">{% trans "Tweet this" %}</a></div>
             <div>{% trans "Tags" %}: {{ article.tags_links|safeseq|join:", " }}</div>
         </div>
 
@@ -62,7 +63,7 @@
 		  var js, fjs = d.getElementsByTagName(s)[0];
 		  if (d.getElementById(id)) return;
 		  js = d.createElement(s); js.id = id;
-		  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId={{ share_fb_app_id }}&version=v2.0";
+		  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId={{ share_fb_app_id }}&version=v3.0";
 		  fjs.parentNode.insertBefore(js, fjs);
 		}(document, 'script', 'facebook-jssdk'));</script>
 
@@ -77,17 +78,6 @@
 					fjs.parentNode.insertBefore(js, fjs);
 				}
 			}(document, 'script', 'twitter-wjs');
-		</script>
-
-        <script type="text/javascript">
-			(function() {
-				var po = document.createElement('script');
-				po.type = 'text/javascript';
-				po.async = true;
-				po.src = 'https://apis.google.com/js/plusone.js';
-				var s = document.getElementsByTagName('script')[0];
-				s.parentNode.insertBefore(po, s);
-			})();
 		</script>
     {% endwith %}
 {% endblock %}

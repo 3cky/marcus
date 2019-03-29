@@ -242,6 +242,7 @@ def article(request, year, month, day, slug, language):
 
     return render(request, 'marcus/article.html', {
         'article': models.Translation(obj, language),
+        'article_obj': obj,
         'comments': comments,
         # 'noteworthy_count': comments.filter(noteworthy=True).count(),
         'form': not obj.comments_hidden and form,
