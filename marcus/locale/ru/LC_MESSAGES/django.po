@@ -33,7 +33,7 @@ msgstr "комментарии"
 msgid "Text"
 msgstr "Текст"
 
-#: forms.py:25
+#: marcus/forms.py:19
 msgid "Name"
 msgstr "Имя"
 

@@ -1,8 +1,7 @@
-# coding: utf-8
 from hashlib import md5
 
-from django.core.urlresolvers import reverse
-from django.template import loader, Template, Context, TemplateDoesNotExist
+from django.urls import reverse
+from django.template import loader, Template, TemplateDoesNotExist
 from django.views.decorators.http import condition
 from django.contrib.syndication import views
 from django.contrib.auth.models import User
@@ -20,17 +19,17 @@ class ContentAtom1Feed(Atom1Feed):
         super(ContentAtom1Feed, self).add_root_elements(handler)
         hub_link = self.feed.get('hub_link')
         if hub_link is not None:
-            handler.addQuickElement(u'link', '', {
-                u'rel': u'hub',
-                u'href': hub_link,
+            handler.addQuickElement('link', '', {
+                'rel': 'hub',
+                'href': hub_link,
             })
         image_url = getattr(settings, 'MARCUS_FEED_IMAGE', '')
-        handler.addQuickElement(u'logo', image_url, {})
+        handler.addQuickElement('logo', image_url, {})
 
     def add_item_elements(self, handler, item):
         super(ContentAtom1Feed, self).add_item_elements(handler, item)
         if item['content'] is not None:
-            handler.addQuickElement(u'content', item['content'], {u'type': u'html', u'xml:base': item['link']})
+            handler.addQuickElement('content', item['content'], {'type': 'html', 'xml:base': item['link']})
 
 
 def viewmethod(view):
@@ -57,7 +56,7 @@ class ContentFeed(views.Feed):
         except TemplateDoesNotExist:
             template = Template('{{ obj }}')
         return {
-            'content': template.render(Context({'obj': item})),
+            'content': template.render({'obj': item}),
         }
 
     def etag(self, request, *args, **kwargs):
@@ -65,7 +64,7 @@ class ContentFeed(views.Feed):
         qs = self.get_queryset(obj, language)
         if not qs:
             return None
-        return md5(str((self.updated(qs[0]), language))).hexdigest()
+        return md5(str((self.updated(qs[0]), language)).encode()).hexdigest()
 
     @viewmethod
     @condition(lambda r, s, *args, **kwargs: s.etag(r, *args, **kwargs))
@@ -73,7 +72,7 @@ class ContentFeed(views.Feed):
         return super(ContentFeed, self).__call__(request, *args, **kwargs)
 
 
-class ArticleFeed(object):
+class ArticleFeed:
     title_template = 'marcus/feeds/article_title.html'
     description_template = 'marcus/feeds/article_summary.html'
     content_template = 'marcus/feeds/article_content.html'
@@ -82,9 +81,10 @@ class ArticleFeed(object):
     subtitle = settings.MARCUS_SUBTITLE
 
     def author_name(self):
-        return self.author.scipio_profile
+        return self.author.username
 
-    def items(self, (obj, language)):
+    def items(self, item):
+        obj, language = item
         qs = self.get_queryset(obj, language)[:settings.MARCUS_ITEMS_IN_FEED]
         return [models.Translation(a, language) for a in qs]
 
@@ -96,12 +96,13 @@ class ArticleFeed(object):
 
 
 class Article(ArticleFeed, ContentFeed):
+
     def get_object(self, request, language):
         translation.activate(language or 'ru')
         return None, language
 
-    def link(self, (obj, language)):
-        return utils.iurl(reverse('marcus-index'), language)
+    def link(self, item):
+        return utils.iurl(reverse('marcus:index'), item[1])
 
     def get_queryset(self, obj, language):
         return models.Article.public.language(language)
@@ -113,44 +114,48 @@ class Category(ArticleFeed, ContentFeed):
         category = get_object_or_404(models.Category, slug=slug)
         return category, language
 
-    def title(self, (category, language)):
+    def title(self, category, language):
         category = models.Translation(category, language)
-        return u'%s » %s' % (settings.MARCUS_TITLE, category.title())
+        return '%s » %s' % (settings.MARCUS_TITLE, category.title())
 
-    def link(self, (category, language)):
-        return utils.iurl(reverse('marcus-category', args=[category.slug]), language)
+    def link(self, item):
+        category, language = item
+        return utils.iurl(reverse('marcus:category', args=[category.slug]), language)
 
     def get_queryset(self, category, language):
         return models.Article.public.language(language).filter(categories=category)
 
 
 class Tag(ArticleFeed, ContentFeed):
+
     def get_object(self, request, slug, language):
         translation.activate(language or 'ru')
         tag = get_object_or_404(models.Tag, slug=slug)
         return tag, language
 
-    def title(self, (tag, language)):
+    def title(self, tag, language):
         tag = models.Translation(tag, language)
-        return u'%s » %s' % (settings.MARCUS_TITLE, tag.title())
+        return '%s » %s' % (settings.MARCUS_TITLE, tag.title())
 
-    def link(self, (tag, language)):
-        return utils.iurl(reverse('marcus-tag', args=[tag.slug]), language)
+    def link(self, item):
+        tag, language = item
+        return utils.iurl(reverse('marcus:tag', args=[tag.slug]), language)
 
     def get_queryset(self, tag, language):
         return models.Article.public.language(language).filter(tags=tag)
 
 
-class CommentFeed(object):
+class CommentFeed:
     title_template = 'marcus/feeds/comment_title.html'
     description_template = 'marcus/feeds/comment_summary.html'
     content_template = 'marcus/feeds/comment_content.html'
     subtitle = settings.MARCUS_SUBTITLE
 
     def title(self):
-        return u'%s » %s' % (settings.MARCUS_TITLE, _(u'comments'))
+        return '%s » %s' % (settings.MARCUS_TITLE, _('comments'))
 
-    def items(self, (obj, language)):
+    def items(self, item):
+        obj, language = item
         qs = self.get_queryset(obj, language).select_related(
             'author',
         )[:settings.MARCUS_ITEMS_IN_FEED]
@@ -177,8 +182,9 @@ class Comment(CommentFeed, ContentFeed):
         translation.activate(language or 'ru')
         return None, language
 
-    def link(self, (obj, language)):
-        return utils.iurl(reverse('marcus-index'), language)
+    def link(self, item):
+        _, language = item
+        return utils.iurl(reverse('marcus:index'), language)
 
     def get_queryset(self, obj, language):
         return models.Comment.public.language(language).order_by('-created')
@@ -195,11 +201,13 @@ class ArticleComment(CommentFeed, ContentFeed):
             slug=slug,
         ), language
 
-    def title(self, (article, language)):
+    def title(self, item):
+        article, language = item
         article = models.Translation(article, language)
-        return u'%s » %s' % (article.title(), _(u'comments'))
+        return '%s » %s' % (article.title(), _('comments'))
 
-    def link(self, (article, language)):
+    def link(self, item):
+        article, language = item
         article = models.Translation(article, language)
         return article.get_absolute_url()
 

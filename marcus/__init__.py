@@ -1,3 +1,3 @@
-__version__ = "0.7.5"
+__version__ = "1.0.5"
 
 default_app_config = 'marcus.apps.MarcusAppConfig'

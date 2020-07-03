@@ -1,22 +1,19 @@
-# coding: utf-8
 import json
-import scipio
 import datetime
-from scipio.forms import AuthForm
 
 from django import http
 from django.db.models import Q
 from django.utils import timezone
 from django.utils.safestring import mark_safe
 from django.core.paginator import Paginator, InvalidPage
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.views.decorators.http import require_POST
 from django.shortcuts import render, redirect
 from django.utils import translation
 from django.contrib import auth
 from django.conf import settings
 
-from marcus import models, forms, antispam, utils
+from marcus import models, forms, utils
 from marcus.utils import get_object_or_404
 
 
@@ -36,7 +33,7 @@ def object_list(request, queryset, template_name, context):
 
 def superuser_required(func):
     def wrapper(request, *args, **kwargs):
-        if not request.user.is_authenticated() or not request.user.is_superuser:
+        if not request.user.is_authenticated or not request.user.is_superuser:
             return http.HttpResponseForbidden('Superuser required', content_type='text/plain')
         return func(request, *args, **kwargs)
     return wrapper
@@ -150,7 +147,7 @@ def archive(request, year, month, language):
 
 def archive_short(request, year, language):
     args = [arg for arg in (year, language, ) if arg]
-    url = reverse('marcus-archive', args=args)
+    url = reverse('marcus:archive', args=args)
     return redirect(url)
 
 
@@ -171,19 +168,13 @@ def find_article(request, slug):
 
 
 def _process_new_comment(request, comment, language, check_login):
-    spam_status = antispam.conveyor.validate(request, comment=comment)
+    spam_status = 'unknown'  # TODO
     if spam_status == 'spam':
         comment.delete()
         return render(request, 'marcus/spam.html', {
             'text': comment.text,
             'admins': [e for n, e in settings.ADMINS],
         })
-    if check_login and not request.user.is_authenticated():
-        form = AuthForm(request.session, {'openid_identifier': request.POST['name']})
-        if form.is_valid():
-            comment = models.Translation(comment, language)
-            url = form.auth_redirect(request, target=comment.get_absolute_url(), data={'acquire': str(comment.pk)})
-            return redirect(url)
     comment.spam_status = spam_status
     if spam_status == 'clean':
         comment.approved = timezone.now()
@@ -195,8 +186,8 @@ def _process_new_comment(request, comment, language, check_login):
 
 def article_short(request, year, slug, language):
     obj = get_object_or_404(models.Article, published__year=year, slug=slug)
-    args = [i for i in year, obj.published.month, obj.published.day, slug, language if i]
-    url = reverse('marcus-article', args=args)
+    args = [i for i in (year, obj.published.month, obj.published.day, slug, language) if i]
+    url = reverse('marcus:article', args=args)
     return redirect(url)
 
 
@@ -212,14 +203,14 @@ def article(request, year, month, day, slug, language):
         if form.is_valid():
             request.session['guest_name'] = form.cleaned_data.get('name', '')
             request.session['guest_email'] = form.cleaned_data.get('xemail', '')
-            form.cleaned_data['text'] = form.cleaned_data['text'].replace('script', u'sсript')
+            form.cleaned_data['text'] = form.cleaned_data['text'].replace('script', 'sсript')
             comment = form.save()
             return _process_new_comment(request, comment, language, True)
     else:
         form = forms.CommentForm(article=obj, language=language)
 
     comments = models.Comment.common.language(language)\
-        .select_related('author', 'author__scipio_profile', 'article')\
+        .select_related('author', 'article')\
         .filter(article=obj, type="comment")\
         .filter(Q(guest_name=guest_name) | ~Q(approved=None))\
         .order_by('created', 'approved')
@@ -234,7 +225,7 @@ def article(request, year, month, day, slug, language):
             del request.session['unapproved']
 
     share_title = obj.title()
-    share_url = utils.absolute_url(utils.iurl(reverse('marcus-article-short', args=[obj.published.year, obj.slug, ]), language))
+    share_url = utils.absolute_url(utils.iurl(reverse('marcus:article-short', args=[obj.published.year, obj.slug, ]), language))
     share_suffix = settings.MARCUS_SHARE_SUFFIX.replace('@', '%40')
 
     keywords = [tag.title(language) for tag in obj.tags.all()] +\
@@ -271,31 +262,12 @@ def draft(request, pk, language):
     })
 
 
-def acquire_comment(sender, user, acquire=None, language=None, **kwargs):
-    if acquire is None:
-        return
-    try:
-        auth.login(sender, user)
-        comment = models.Comment.objects.get(pk=acquire)
-        comment.author = user
-        comment.save()
-        _process_new_comment(sender, comment, language, False)
-    except models.Comment.DoesNotExist:
-        pass
-
-
 @superuser_required
 @require_POST
 def approve_comment(request, id):
     comment = get_object_or_404(models.Comment, pk=id)
-    antispam.conveyor.submit_ham(comment.spam_status, comment=comment)
     comment.approved = timezone.now()
     comment.save()
-    if not comment.by_guest():
-        scipio_profile = comment.author.scipio_profile
-        if scipio_profile.spamer is None:
-            scipio_profile.spamer = False
-            scipio_profile.save()
     return redirect(spam_queue)
 
 
@@ -303,12 +275,6 @@ def approve_comment(request, id):
 @require_POST
 def spam_comment(request, id):
     comment = get_object_or_404(models.Comment, pk=id)
-    if not comment.by_guest():
-        scipio_profile = comment.author.scipio_profile
-        if scipio_profile.spamer is None:
-            scipio_profile.spamer = True
-            scipio_profile.save()
-    antispam.conveyor.submit_spam(comment=comment)
     comment.delete()
     return redirect(comment.article)
 
@@ -343,7 +309,7 @@ def article_upload_image_preview(request, object_id):
     max_width = 300
     image_path = get_object_or_404(models.ArticleUpload, pk=object_id).upload.path
 
-    import StringIO
+    import io
     try:
         from PIL import Image
     except ImportError:
@@ -353,7 +319,7 @@ def article_upload_image_preview(request, object_id):
     except Exception:
         return http.HttpResponse("Not a image", content_type="text/html")
 
-    buffer = StringIO.StringIO()
+    buffer = io.StringIO()
     max_width = max_width if max_width < image.size[0] else image.size[0]
     height = int((float(image.size[1]) * float(max_width / float(image.size[0]))))
     image.resize((max_width, height), Image.ANTIALIAS).save(buffer, "PNG")
@@ -362,12 +328,12 @@ def article_upload_image_preview(request, object_id):
 
 def search(request, language):
     SEARCH_LANGUAGES = (
-        (None, translation.ugettext_lazy(u'All')),
-        ('en', translation.ugettext_lazy(u'English')),
+        (None, translation.ugettext_lazy('All')),
+        ('en', translation.ugettext_lazy('English')),
     )
     search_query = request.GET.get('s', '')
     search_language = request.GET.get('l', None)
-    if search_language not in dict(SEARCH_LANGUAGES).keys():
+    if search_language not in list(dict(SEARCH_LANGUAGES).keys()):
         search_language = None
 
     language = search_language
@@ -407,6 +373,3 @@ def article_comments_unsubscribe(request, article_id, token, language):
         'article_link': mark_safe(article.link(language)),
         'guest_name': found_comment.guest_name or found_comment.guest_email,
     })
-
-
-scipio.signals.authenticated.connect(acquire_comment)

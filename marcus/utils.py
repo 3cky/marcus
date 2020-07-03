@@ -1,11 +1,10 @@
-# coding: utf-8
 import re
 
 from django.http import Http404
 from django.conf import settings
 from django.contrib.sites.models import Site
-from django.core.urlresolvers import reverse
-from django.template import loader, Context
+from django.urls import reverse
+from django.template import loader
 from django.shortcuts import get_object_or_404 as goo404
 from django.core.mail import EmailMultiAlternatives
 from django.utils import translation
@@ -34,7 +33,7 @@ def get_language_code_in_text(text):
     """
     language = None
     if text:
-        language = "ru" if re.search(u'[а-яА-Я]+', text) else "en"
+        language = "ru" if re.search('[а-яА-Я]+', text) else "en"
     return language
 
 
@@ -47,9 +46,9 @@ def email_text_quote(text, width=10, prefix="|"):
         while words:
             chunk = words[0:width]
             del words[0:width]
-            chunks.append(u"{0} {1}".format(prefix, u" ".join(chunk)))
+            chunks.append("{0} {1}".format(prefix, " ".join(chunk)))
         chunks.append(prefix)
-    return u"\n".join(chunks)
+    return "\n".join(chunks)
 
 
 def notify_comment_context(target_comment):
@@ -78,7 +77,7 @@ def notify_comment_context(target_comment):
 def notify_comment_managers(target_comment):
     """Notify MANAGERS of the blog
     """
-    recipients = dict(settings.MANAGERS).values()
+    recipients = list(dict(settings.MANAGERS).values())
     assert recipients, 'Please setup settings.MANAGERS for notify about new comments'
 
     email = target_comment.guest_email or target_comment.author.email
@@ -89,10 +88,9 @@ def notify_comment_managers(target_comment):
 
     common_context = notify_comment_context(target_comment)
     common_context['comment_admin_url'] = target_comment.get_admin_url()
-    context = Context(common_context)
-    text_message = loader.get_template("marcus/emails/managers_comment.txt").render(context)
-    html_message = loader.get_template("marcus/emails/managers_comment.html").render(context)
-    subject = loader.get_template("marcus/emails/managers_comment_subject.txt").render(context).strip()
+    text_message = loader.get_template("marcus/emails/managers_comment.txt").render(common_context)
+    html_message = loader.get_template("marcus/emails/managers_comment.html").render(common_context)
+    subject = loader.get_template("marcus/emails/managers_comment_subject.txt").render(common_context).strip()
     return send_email(subject, text_message, html_message, recipients)
 
 
@@ -123,14 +121,13 @@ def notify_comment_followers(target_comment):
             continue
         # Build context
         unsubscribe_url = reverse(
-            "marcus-article-comments-unsubscribe",
+            "marcus:article-comments-unsubscribe",
             args=[target_comment.article_id, comment.make_token(), common_context['language']]
         )
         context = {
             'unsubscribe_url': unsubscribe_url,
         }
         context.update(common_context)
-        context = Context(context)
         # Build message
         text_message = loader.get_template("marcus/emails/followup_comment.txt").render(context)
         html_message = loader.get_template("marcus/emails/followup_comment.html").render(context)

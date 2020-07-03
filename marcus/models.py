@@ -3,11 +3,9 @@ import hashlib
 import pytils
 import itertools
 
-from scipio.models import Profile
-
 from django.db import models
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.utils.safestring import mark_safe
@@ -22,7 +20,8 @@ from marcus import managers
 from marcus import markdown
 
 
-class Translation(object):
+class Translation:
+
     def __init__(self, obj, language):
         super(Translation, self).__init__()
         self.obj = obj
@@ -37,7 +36,7 @@ class Translation(object):
     def __dir__(self):
         return dir(self.obj)
 
-    def __unicode__(self):
+    def __str__(self):
         """For drawing sequence
 
         Example:
@@ -45,7 +44,7 @@ class Translation(object):
             Tags: {{ article.tags_links|safeseq|join:", " }}
         {% endwith %}
         """
-        return unicode(self.obj)
+        return str(self.obj)
 
 
 class Category(models.Model):
@@ -56,7 +55,7 @@ class Category(models.Model):
     title_en = models.CharField(max_length=255, blank=True)
     description_en = models.TextField(blank=True)
     count_articles_en = models.PositiveIntegerField(default=0)
-    parent = models.ForeignKey('self', null=True, blank=True)
+    parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE)
     essential = models.BooleanField(default=False, db_index=True)
 
     objects = managers.CategoryManager()
@@ -65,7 +64,7 @@ class Category(models.Model):
         verbose_name = 'category'
         verbose_name_plural = 'categories'
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title()
 
     def save(self, *args, **kwargs):
@@ -88,7 +87,7 @@ class Category(models.Model):
     description.needs_language = True
 
     def get_absolute_url(self, language=None):
-        return utils.iurl(reverse('marcus-category', args=[self.slug]), language)
+        return utils.iurl(reverse('marcus:category', args=[self.slug]), language)
     get_absolute_url.needs_language = True
 
     def get_feed_url(self, language=None):
@@ -100,7 +99,7 @@ class Category(models.Model):
     article_count.needs_language = True
 
     def anchor(self, language=None):
-        return u'<a href="{0}">{1}</a>'.format(self.get_absolute_url(language), self.title(language))
+        return '<a href="{0}">{1}</a>'.format(self.get_absolute_url(language), self.title(language))
     anchor.needs_language = True
 
 
@@ -115,7 +114,7 @@ class Tag(models.Model):
 
     objects = managers.TagManager()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title()
 
     def save(self, *args, **kwargs):
@@ -131,7 +130,7 @@ class Tag(models.Model):
         return self.save_base(*args, **kwargs)
 
     def get_absolute_url(self, language=None):
-        return utils.iurl(reverse('marcus-tag', args=[self.slug]), language)
+        return utils.iurl(reverse('marcus:tag', args=[self.slug]), language)
     get_absolute_url.needs_language = True
 
     def title(self, language=None):
@@ -146,7 +145,7 @@ class Tag(models.Model):
     article_count.needs_language = True
 
     def anchor(self, language=None):
-        return u'<a href="{0}">{1}</a>'.format(self.get_absolute_url(language), self.title(language))
+        return '<a href="{0}">{1}</a>'.format(self.get_absolute_url(language), self.title(language))
     anchor.needs_language = True
 
     def count(self, language=None):
@@ -180,7 +179,7 @@ class Article(models.Model):
     objects = models.Manager()
     public = managers.PublicArticlesManager()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.slug
 
     def save(self, **kwargs):
@@ -201,14 +200,14 @@ class Article(models.Model):
 
     def get_absolute_url(self, language=None):
         if self.published:
-            url = reverse('marcus-article', args=[
+            url = reverse('marcus:article', args=[
                 '%04d' % self.published.year,
                 '%02d' % self.published.month,
                 '%02d' % self.published.day,
                 self.slug
             ])
         else:
-            url = reverse('marcus-draft', args=[self.pk])
+            url = reverse('marcus:draft', args=[self.pk])
         return utils.iurl(url, language)
     get_absolute_url.needs_language = True
 
@@ -262,7 +261,7 @@ class Article(models.Model):
     more.needs_language = True
 
     def link(self, language=None):
-        return u'<a href="{url}">{title}</a>'.format(
+        return '<a href="{url}">{title}</a>'.format(
             url=self.get_absolute_url(language),
             title=self.title(language)
         )
@@ -271,7 +270,7 @@ class Article(models.Model):
     def full_link(self, language=None):
         current_site = Site.objects.get_current()
         url = "https://{domain}{url}".format(domain=current_site.domain, url=self.get_absolute_url(language))
-        return u'<a href="{url}">{title}</a>'.format(url=url, title=self.title(language))
+        return '<a href="{url}">{title}</a>'.format(url=url, title=self.title(language))
     html.needs_language = True
 
     def categories_links(self, language=None):
@@ -287,26 +286,27 @@ COMMENT_TYPES = (
     ('comment', _('Comment')),
 )
 
+
 LANGUAGES = (
-    ('ru', _(u'Russian')),
-    ('en', _(u'English')),
+    ('ru', _('Russian')),
+    ('en', _('English')),
 )
 
 
 class ArticleUpload(models.Model):
-    article = models.ForeignKey(Article, related_name="uploads")
+    article = models.ForeignKey(Article, related_name="uploads", on_delete=models.CASCADE)
     upload = models.FileField(upload_to="uploads")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.upload.name
 
 
 class Comment(models.Model):
-    article = models.ForeignKey(Article, related_name='comments')
+    article = models.ForeignKey(Article, related_name='comments', on_delete=models.CASCADE)
     type = models.CharField(max_length=20, choices=COMMENT_TYPES)
-    text = models.TextField(_(u'Text'))
-    language = models.CharField(_(u'Language'), max_length=2, choices=LANGUAGES)
-    author = models.ForeignKey(User)
+    text = models.TextField(_('Text'))
+    language = models.CharField(_('Language'), max_length=2, choices=LANGUAGES)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     guest_name = models.CharField(max_length=255, blank=True)
     guest_email = models.CharField(max_length=200, blank=True, default='')
     guest_url = models.URLField(blank=True)
@@ -325,11 +325,11 @@ class Comment(models.Model):
     common = managers.CommentsManager()
 
     def make_token(self, salt="something"):
-        secrets = map(unicode, [self.pk, self.guest_email, self.created, self.ip, salt])
-        return hashlib.md5(u":".join(secrets)).hexdigest()
+        secrets = list(map(str, [self.pk, self.guest_email, self.created, self.ip, salt]))
+        return hashlib.md5(":".join(secrets).encode()).hexdigest()
 
-    def __unicode__(self):
-        return u'%s, %s, %s' % (self.created.strftime('%Y-%m-%d'), self.article, self.author_str())
+    def __str__(self):
+        return '%s, %s, %s' % (self.created.strftime('%Y-%m-%d'), self.article, self.author_str())
 
     def get_absolute_url(self, language=None):
         article = Translation(self.article, language)
@@ -355,26 +355,14 @@ class Comment(models.Model):
     def author_str(self):
         if self.by_guest():
             return self.guest_name
-        if self.author.get_full_name():
-            return self.author.get_full_name()
-        try:
-            return unicode(self.author.scipio_profile)
-        except Profile.DoesNotExist:
-            return unicode(self.author)
+        return str(self.author)
 
     def author_url(self):
-        try:
-            return self.author.profile.link
-        except (UserProfile.DoesNotExist, AttributeError):
-            pass
-        try:
-            return self.author.scipio_profile.openid
-        except (Profile.DoesNotExist, AttributeError):
-            return None
+        return None
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, related_name="profile")
+    user = models.OneToOneField(User, related_name="profile", on_delete=models.CASCADE)
     link = models.URLField(blank=True)
 
     def __str__(self):

@@ -1,4 +1,5 @@
 from django.apps import AppConfig, apps
+from django.db import models
 
 import secretballot
 

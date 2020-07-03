@@ -1,11 +1,11 @@
-# coding: utf-8
 import re
 import os
-import urllib2
+import urllib.request
+import urllib.error
+import urllib.parse
 import html2text
-import urlparse
 
-from django.core.urlresolvers import reverse, NoReverseMatch
+from django.urls import reverse, NoReverseMatch
 from django.conf import settings
 
 from marcus.wordpress_importer import BasePipeline
@@ -72,7 +72,7 @@ class WpContentUploadsToMediaPipeline(BasePipeline):
 
     def download_and_save(self, url):
         try:
-            url_path = urlparse.urlparse(url).path
+            url_path = urllib.parse.urlparse(url).path
         except ValueError:
             return None
 
@@ -89,11 +89,11 @@ class WpContentUploadsToMediaPipeline(BasePipeline):
 
         try:
             # if settings.DEBUG is False:
-            open(os.path.join(media_root_path, file_name), 'w').write(urllib2.urlopen(url).read())
-        except (urllib2.HTTPError, urllib2.URLError), e:
-            print e
+            open(os.path.join(media_root_path, file_name), 'w').write(urllib.request.urlopen(url).read())
+        except (urllib.error.HTTPError, urllib.error.URLError) as e:
+            print(e)
 
-        print "└─ Downloaded {url}".format(url=url)
+        print("└─ Downloaded {url}".format(url=url))
 
         return os.path.join(media_url_path, file_name)
 
@@ -124,7 +124,7 @@ class ChangeUrlToArticleForImagePipeline(BasePipeline):
             urls = re.findall('href\=\"(.+?\/{slug}\/)\"'.format(slug=slug), content) or []
             for url in urls:
                 try:
-                    new_url = reverse('marcus-article', args=[pub_date.year, pub_date.month, pub_date.day, slug])
+                    new_url = reverse('marcus:article', args=[pub_date.year, pub_date.month, pub_date.day, slug])
                     content = content.replace(url, new_url)
                 except NoReverseMatch:
                     pass

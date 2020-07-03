@@ -37,7 +37,7 @@ class TreeNode(template.Node):
                 head = None
                 try:
                     while True:
-                        item = items.next()
+                        item = next(items)
                         if isinstance(item, (list, tuple)):
                             yield head, item
                             head = None
@@ -51,7 +51,7 @@ class TreeNode(template.Node):
         def render_item(item, sub_items, level):
             return ''.join([
                 '<li>',
-                item and self.node_list.render(template.Context({'item': item, 'level': level})) or '',
+                item and self.node_list.render({'item': item, 'level': level}) or '',
                 sub_items and '<ul>%s</ul>' % ''.join(render_items(sub_items, level + 1)) or '',
                 '</li>'
             ])

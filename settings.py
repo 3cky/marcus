@@ -1,5 +1,6 @@
 import os
 import imp
+from django.utils.translation import ugettext_lazy as _
 
 PROJECT_ROOT = os.path.dirname(__file__)
 PROJECT_NAME = os.path.basename(PROJECT_ROOT)
@@ -16,8 +17,6 @@ MARCUS_ITEMS_IN_FEED = 20
 MARCUS_AUTHOR_ID = 1
 MARCUS_TAG_MINIMUM_ARTICLES = 0
 
-# Specify blog names:
-from django.utils.translation import ugettext_lazy as _
 MARCUS_TITLE = _('Blog')
 MARCUS_SUBTITLE = _('Sample blog')
 
@@ -42,23 +41,7 @@ MARCUS_SEARCH_FIELDS = [
 MARCUS_GA_ACCOUNT_ID = ''
 MARCUS_GA_ACCOUNT_NAME = ''
 
-# OpenID sessions dir. OpenID authentication will not work without it.
-SCIPIO_STORE_ROOT = os.path.join(STORAGE_ROOT, 'scipio')
-
-# URL passed to OpenID-provider to identify site that requests authentication.
-# Should not end with '/'.
-# Complete site URL is passed if the value is empty.
-SCIPIO_TRUST_URL = ''
-
-# Akismet is a spam filtering service.
-# Without the key will not work comments.
-# You can receive the key here https://akismet.com/signup/
-SCIPIO_AKISMET_KEY = ''
-
-SCIPIO_USE_CONTRIB_SITES = True
-
 AUTHENTICATION_BACKENDS = (
-    'scipio.authentication.OpenIdBackend',
     'django.contrib.auth.backends.ModelBackend',
     'social_core.backends.facebook.FacebookOAuth2',
     'social_core.backends.twitter.TwitterOAuth',
@@ -71,13 +54,13 @@ AUTHENTICATION_BACKENDS = (
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-                'marcus.context_processors.marcus_context',
-                'django.contrib.auth.context_processors.auth',
                 'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+                'marcus.context_processors.marcus_context',
                 'social_django.context_processors.backends',
                 'social_django.context_processors.login_redirect',
             ],
@@ -102,7 +85,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.flatpages',
     'marcus',
-    'scipio',
+    'martor',
     'social_django',
     'secretballot',
     'likes',

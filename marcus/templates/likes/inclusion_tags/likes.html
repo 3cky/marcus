@@ -10,9 +10,9 @@
 	    <div class="likes-container">
 	        {% if can_vote %}
 	            <a class="likes-link" href="{% url "like" content_type content_obj.id 1 %}" rel="nofollow"><span class="likes-heart"></span></a>
-	            <span class="likes-text">Like! {{ content_obj.vote_total }}</span>
+	            <span class="likes-text">Like! {{ content_obj.total_upvotes }}</span>
 	        {% else %}
-	            <span class="likes-heart-active"></span> <span class="likes-text">Like! {{ content_obj.vote_total }}</span>
+	            <span class="likes-heart-active"></span> <span class="likes-text">Like! {{ content_obj.total_upvotes }}</span>
 	        {% endif %}
 	    </div>
     </div>

@@ -1,3 +1,5 @@
+import logging
+
 from django import forms
 from django.utils import translation
 from django.utils.translation import ugettext as _
@@ -7,24 +9,26 @@ from marcus import models
 from marcus.utils import get_language_code_in_text
 
 
+logger = logging.getLogger(__name__)
+
+
 def model_field(model, fieldname, **kwargs):
     return model._meta.get_field(fieldname).formfield(**kwargs)
 
 
 class CommentForm(forms.Form):
-    text = model_field(models.Comment, 'text',
-                       widget=forms.Textarea(attrs={'cols': '80', 'rows': '20'}))
-    language = model_field(models.Comment, 'language', required=False)
-    name = forms.CharField(required=False)
-    xemail = forms.EmailField(required=False)
+    text = model_field(
+        models.Comment, 'text', label=_('Text'), widget=forms.Textarea(attrs={'cols': '80', 'rows': '20'}))
+    language = model_field(
+        models.Comment, 'language', required=False)
+    name = forms.CharField(
+        label=_('Name'), required=False)
+    xemail = forms.EmailField(
+        label=_('Email for notifications'), required=False)
 
     def __init__(self, user=None, ip=None, article=None, language=None, *args, **kwargs):
         super(CommentForm, self).__init__(*args, **kwargs)
-        translation.activate(language or 'ru')
-        self.fields['text'].label = _(u'Text')
-        self.fields['name'].label = _(u'Name')
-        self.fields['xemail'].label = _(u'Email for notifications (will not be published)')
-        if user and not user.is_authenticated():
+        if user and not user.is_authenticated:
             user = User.objects.get(username='marcus_guest')
         self.user = user
         self.ip = ip
@@ -40,20 +44,23 @@ class CommentForm(forms.Form):
         if not self.cleaned_data['language']:
             language = get_language_code_in_text(self.data.get('text', ''))
         else:
-            raise forms.ValidationError(_(u'This field is required.'))
+            raise forms.ValidationError(_('This field is required.'))
         return language
 
     def clean_name(self):
         if self.user.username != 'marcus_guest':
-            return u''
+            return ''
         if not self.cleaned_data['name']:
-            raise forms.ValidationError(_(u'This field is required.'))
+            raise forms.ValidationError(_('This field is required.'))
         if User.objects.filter(username=self.cleaned_data['name']).exists():
-            raise forms.ValidationError(_(u'This name is already taken.'))
+            raise forms.ValidationError(_('This name is already taken.'))
         return self.cleaned_data['name']
 
     def save(self):
         guest_email = self.cleaned_data.get('xemail')
+        logger.error('CommentForm save data: %s', [
+            self.cleaned_data, self.user, self.ip, guest_email
+        ])
         return self.article.comments.create(
             type='comment',
             text=self.cleaned_data['text'],

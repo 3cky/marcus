@@ -9,14 +9,11 @@
         <meta property="og:image" content="{% block og_image %}{% endblock %}"/>
         <meta property="og:description" content="{% block og_description %}{% endblock %}"/>
         {% block meta %}{% endblock %}
-        <!--[if lt IE 9]>
-            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-        <link rel="stylesheet" href="{% static "/static/screen.css" %}" />
+        <link rel="stylesheet" href="{% static '/screen.css' %}" />
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
         <style type="text/css">{% block css %}{% endblock %}</style>
         <script type="text/javascript">{% block javascript %}{% endblock %}</script>
-        <script type="text/javascript" src="{% static "/static/jquery/jquery.min.js" %}"></script>
+        <script type="text/javascript" src="{% static "/jquery/jquery.min.js" %}"></script>
         {% block extrahead %}{% endblock %}
     </head>
     <body>
@@ -26,15 +23,15 @@
                     {% include "marcus/blocks/search.html" %}
                     <div class="site-langs">
                         {% if language == "en" %}
-                            <a href="{% url 'marcus-index' %}">Toggle to Russian and English articles</a>
+                            <a href="{% url 'marcus:index' %}">Toggle to Russian and English articles</a>
                         {% else %}
-                            <a href="{% url 'marcus-index' "en" %}">Toggle to English articles</a>
+                            <a href="{% url 'marcus:index' "en" %}">Toggle to English articles</a>
                         {% endif %}
                     </div>
                 </div>
                 <div class="site-title">
                     <h1>
-                        <a href="{% iurl 'marcus-index' %}">{% trans MARCUS_TITLE %}</a>
+                        <a href="{% iurl 'marcus:index' %}">{% trans MARCUS_TITLE %}</a>
                     </h1>
                 </div>
             {% endblock %}
@@ -43,15 +40,15 @@
         <div class="menu">
             {% block feeds %}
                 <div style="float:right">
-                    <a href="{% iurl 'marcus-feed' %}">
-                        <img src="{% static "/static/images/rss.jpg" %}" />
+                    <a href="{% iurl 'marcus:feed' %}">
+                        <img src="{% static "/images/rss.jpg" %}" />
                     </a>
                 </div>
             {% endblock %}
             <div class="site-menu">
                 <ul>
-                    <li><a href="{% iurl 'marcus-index' %}">{% trans "Blog" %}</a></li>
-                    <li><a href="{% iurl 'flatpage-about' %}">{% trans "About" %}</a></li>
+                    <li><a href="{% iurl 'marcus:index' %}">{% trans "Blog" %}</a></li>
+                    <li><a href="{% iurl 'marcus:flatpage-about' %}">{% trans "About" %}</a></li>
                 </ul>
             </div>
         </div>

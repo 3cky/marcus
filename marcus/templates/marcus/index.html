@@ -19,7 +19,7 @@
 {% endblock %}
 
 {% block sidebar %}
-    {% if profile_image %}<a href="{% iurl 'flatpage-about' %}"><img src="{{ profile_image }}" alt="{% trans "Profile image" %}" /></a>{% endif %}
+    {% if profile_image %}<a href="{% iurl 'marcus:flatpage-about' %}"><img src="{{ profile_image }}" alt="{% trans "Profile image" %}" /></a>{% endif %}
     {% if categories %}
         <h3>{% trans "Categories" %}</h3>
         <ul class="categories-list">
