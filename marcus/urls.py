@@ -33,10 +33,11 @@ urlpatterns = [
     re_path('^(\d{4})/([^/]+)/(?:(en|ru)/)?$', views.article_short, name='article-short'),
     re_path('^draft/(\d+)/(?:(en|ru)/)?$', views.draft, name='draft'),
 
+    re_path('^articleuploadimage/preview/(\d+)/', views.article_upload_image_preview, name='article-upload-image-preview'),
+
     re_path('^search/(?:(en|ru)/)?$', views.search, name='search'),
     re_path('^([^/]+)/', views.find_article, name='find-article'),
 
-    re_path('^articleuploadimage/preview/(\d+)/', views.article_upload_image_preview, name='article-upload-image-preview'),
     path('sitemap', include(('marcus.sitemap_urls', 'sitemap'))),
 
     path('about/', flatpages.flatpage, {'url': '/about/'}, name='flatpage-about'),

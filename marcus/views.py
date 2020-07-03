@@ -319,7 +319,7 @@ def article_upload_image_preview(request, object_id):
     except Exception:
         return http.HttpResponse("Not a image", content_type="text/html")
 
-    buffer = io.StringIO()
+    buffer = io.BytesIO()
     max_width = max_width if max_width < image.size[0] else image.size[0]
     height = int((float(image.size[1]) * float(max_width / float(image.size[0]))))
     image.resize((max_width, height), Image.ANTIALIAS).save(buffer, "PNG")
