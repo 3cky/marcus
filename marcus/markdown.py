@@ -109,7 +109,7 @@ class MarcusRenderer(mistune.Renderer):
             title = ''
         html = '<img src="%s" alt="%s"%s%s />' % (src, text, title, dimensions)
         if dimensions:
-            html = '<a href="%s">%s</a>' % (src, html)
+            html = '<a href="%s" target="_blank">%s</a>' % (src, html)
         return html
 
     def emoji(self, text):
