@@ -11,3 +11,4 @@ class MarcusAppConfig(AppConfig):
     def ready(self):
         article_model = apps.get_model("marcus", "Article")
         secretballot.enable_voting_on(article_model)
+        secretballot.enable_voting_on(article_model, manager_name="public")
