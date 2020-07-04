@@ -396,6 +396,8 @@ i.smorg_star {
 }
 
 .likes-link {
+	text-decoration: none;
+    cursor: pointer;
 }
 
 .likes-text {
@@ -414,7 +416,6 @@ i.smorg_star {
   transform: translate(-50%, -50%);
   height: 50px;
   width: 50px;
-  cursor: pointer;
   background-size: 2900%;
   background-image: url('/static/likes/images/web_heart_animation_edge.png');
   background-position: left;
@@ -438,7 +439,7 @@ margin: 0;
   background-repeat: no-repeat;
 }
 
-.likes-heart:hover {
+.likes-link:hover .likes-heart {
   background-position: right;
 }
 
