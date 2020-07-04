@@ -450,3 +450,8 @@ margin: 0;
   from { background-position:left; }
   to { background-position:right; }
 }
+
+.marked-emoji {
+	max-width: 25px;
+	vertical-align: middle;
+}
