@@ -23,12 +23,16 @@
         <hr />
 
         <div class="article-meta">
+            {% if article.published %}
             <div style="float:right">
                 {{ article.published.date }}
                 {% if request.user.is_staff %}, <a href="{{ article.get_admin_url }}">{% trans "Edit" %}</a>{% endif %}
             </div>
+            {% endif %}
             <div>{% trans "Categories" %}: {{ article.categories_links|safeseq|join:", " }}</div>
+            {% if article.published %}
             <div class="article-socials">{% likes article_obj %}&nbsp;<div class="fb-share-button" data-ref="article" data-href="{{ share_url }}" data-width="106" data-type="button_count"></div>&nbsp;<a href="https://twitter.com/share" class="twitter-share-button" data-url="{{ share_url }}" data-text="{{ share_title }}" data-hashtags="{{ share_suffix }}">{% trans "Tweet this" %}</a></div>
+            {% endif %}
             <div>{% trans "Tags" %}: {{ article.tags_links|safeseq|join:", " }}</div>
         </div>
 
