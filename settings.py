@@ -44,7 +44,7 @@ MARCUS_GA_ACCOUNT_NAME = ''
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'social_core.backends.facebook.FacebookOAuth2',
-    'social_core.backends.twitter.TwitterOAuth',
+    'social_core.backends.twitter_oauth2.TwitterOAuth2',
     'social_core.backends.google.GoogleOAuth2',
     'social_core.backends.github.GithubOAuth2',
     'social_core.backends.vk.VKOAuth2',
@@ -131,7 +131,7 @@ SOCIAL_AUTH_PROVIDERS = None
 # Example:
 # SOCIAL_AUTH_PROVIDERS = collections.OrderedDict([
 #                             ('facebook', 'Facebook'),
-#                             ('twitter', 'Twitter'),
+#                             ('twitter-oauth2', 'Twitter'),
 #                             ('google-oauth2', 'Google'),
 #                             ('github', 'GitHub'),
 #                             ('vk-oauth2', 'VK.com'),
@@ -141,8 +141,8 @@ SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 SOCIAL_AUTH_FACEBOOK_KEY = ""
 SOCIAL_AUTH_FACEBOOK_SECRET = ""
 
-SOCIAL_AUTH_TWITTER_KEY = ''
-SOCIAL_AUTH_TWITTER_SECRET = ''
+SOCIAL_AUTH_TWITTER_OAUTH2_KEY = ''
+SOCIAL_AUTH_TWITTER_OAUTH2_SECRET = ''
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = ''
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ''

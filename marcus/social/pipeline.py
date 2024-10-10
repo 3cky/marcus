@@ -15,7 +15,7 @@ def save_profile(backend, user, response, *args, **kwargs):
     link = None
     if backend.name == 'facebook':
         link = response.get('link')
-    elif backend.name == 'twitter':
+    elif backend.name == 'twitter-oauth2':
         link = 'https://twitter.com/' + user.username
     elif backend.name == 'google-oauth2':
         link = response.get('url')
